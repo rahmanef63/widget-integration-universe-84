@@ -19,7 +19,7 @@ interface SectionContentProps {
 
 const SectionContent: React.FC<SectionContentProps> = ({ activeSection, inView }) => {
   return (
-    <div className="space-y-16 pb-16">
+    <div className="space-y-16 pb-16 w-full">
       <IntroSection inView={inView} />
       <IntegrationSection 
         inView={inView} 

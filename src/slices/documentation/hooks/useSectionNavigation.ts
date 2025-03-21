@@ -24,7 +24,9 @@ export const useSectionNavigation = () => {
     const element = document.getElementById(targetId);
     
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
     }
   };
 

@@ -24,7 +24,7 @@ const DocLayout: React.FC<DocLayoutProps> = ({
   });
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8">
+    <div className="flex flex-col lg:flex-row gap-8 w-full">
       <DocSidebar 
         filteredSections={filteredSections}
         activeSection={activeSection}
@@ -33,7 +33,7 @@ const DocLayout: React.FC<DocLayoutProps> = ({
       />
       
       {/* Main Content */}
-      <main className="flex-1" ref={ref}>
+      <main className="flex-1 w-full overflow-hidden" ref={ref}>
         <SectionContent activeSection={activeSection} inView={inView} />
       </main>
     </div>

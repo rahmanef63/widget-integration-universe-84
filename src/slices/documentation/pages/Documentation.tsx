@@ -17,7 +17,10 @@ const Documentation: React.FC = () => {
 
   // Set isLoaded to true after component mounts
   useEffect(() => {
-    setIsLoaded(true);
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+    return () => clearTimeout(timer);
   }, []);
 
   // Filter sections based on search query
@@ -41,13 +44,17 @@ const Documentation: React.FC = () => {
             setSearchQuery={setSearchQuery} 
           />
           
-          {isLoaded && (
+          {isLoaded ? (
             <DocLayout 
               filteredSections={filteredSections}
               activeSection={activeSection}
               handleSectionClick={handleSectionClick}
               isScrolled={isScrolled}
             />
+          ) : (
+            <div className="flex justify-center items-center py-20">
+              <div className="animate-pulse h-6 w-32 bg-muted rounded"></div>
+            </div>
           )}
         </div>
       </div>
