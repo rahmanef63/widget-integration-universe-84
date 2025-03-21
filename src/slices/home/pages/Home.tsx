@@ -6,20 +6,28 @@ import FeatureSection from '@/shared/components/FeatureSection/FeatureSection';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { HOME_FEATURE_SECTIONS, HOME_HERO_DATA } from '../constants';
+import { ROUTES } from '@/core/constants/routes';
 
 const Home: React.FC = () => {
+  // Ensure we're using the routes from our constants
+  const heroData = {
+    ...HOME_HERO_DATA,
+    ctaLink: ROUTES.ECOSYSTEM,
+    secondaryCtaLink: ROUTES.DOCUMENTATION
+  };
+
   return (
     <>
       <Header />
       
       <main>
         <Hero
-          title={HOME_HERO_DATA.title}
-          subtitle={HOME_HERO_DATA.subtitle}
-          ctaText={HOME_HERO_DATA.ctaText}
-          ctaLink={HOME_HERO_DATA.ctaLink}
-          secondaryCtaText={HOME_HERO_DATA.secondaryCtaText}
-          secondaryCtaLink={HOME_HERO_DATA.secondaryCtaLink}
+          title={heroData.title}
+          subtitle={heroData.subtitle}
+          ctaText={heroData.ctaText}
+          ctaLink={heroData.ctaLink}
+          secondaryCtaText={heroData.secondaryCtaText}
+          secondaryCtaLink={heroData.secondaryCtaLink}
         />
         
         <div id="features">
