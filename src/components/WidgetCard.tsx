@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useInView } from 'react-intersection-observer';
+import { renderIcon } from '@/shared/icon-picker';
+import { LucideIcon } from 'lucide-react';
 
 interface WidgetCardProps {
   title: string;
   description: string;
-  icon: React.ReactNode | string;
+  icon: React.ReactNode | string | LucideIcon;
   index?: number;
   className?: string;
   onClick?: () => void;
@@ -67,7 +69,13 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
         "relative flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary",
         layout === 'horizontal' ? 'flex-shrink-0' : 'mb-4'
       )}>
-        {typeof icon === 'string' ? icon : icon}
+        {typeof icon === 'string' ? (
+          renderIcon(icon)
+        ) : typeof icon === 'function' ? (
+          React.createElement(icon as LucideIcon, { size: 24 })
+        ) : (
+          icon
+        )}
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={isHovered ? { scale: 1.2, opacity: 0.3 } : { scale: 0, opacity: 0 }}
