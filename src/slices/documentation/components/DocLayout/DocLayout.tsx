@@ -23,6 +23,11 @@ const DocLayout: React.FC<DocLayoutProps> = ({
     threshold: 0.1,
   });
 
+  // Log when the layout is mounted
+  useEffect(() => {
+    console.log('DocLayout mounted, activeSection:', activeSection);
+  }, []);
+
   return (
     <div className="flex flex-col lg:flex-row gap-8 w-full">
       <DocSidebar 

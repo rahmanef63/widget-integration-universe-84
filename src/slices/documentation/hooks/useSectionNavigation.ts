@@ -33,34 +33,35 @@ export const useSectionNavigation = () => {
   // Monitor scroll position to update active section
   useEffect(() => {
     const handleScroll = () => {
-      // Get all main section elements
-      const sections = [
-        'intro',
-        'integration',
-        'widget-development',
-        'widget-store',
-        'dashboard-integration',
-        'security',
-        'best-practices',
-        'api'
-      ];
+      // Get all section elements
+      const sections = document.querySelectorAll('section[id]');
+      
+      // If no sections found, do nothing
+      if (sections.length === 0) return;
       
       // Find the section currently in view
       for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          // If the top of the element is in the top half of the viewport
-          if (rect.top <= 300 && rect.bottom > 300) {
-            setActiveSection(section);
-            break;
-          }
+        const rect = section.getBoundingClientRect();
+        // If the top of the element is near the top of the viewport
+        if (rect.top <= 200 && rect.bottom > 200) {
+          setActiveSection(section.id);
+          break;
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Add scroll event listener with a debounce to improve performance
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+    const debouncedHandleScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(handleScroll, 100);
+    };
+
+    window.addEventListener('scroll', debouncedHandleScroll);
+    return () => {
+      window.removeEventListener('scroll', debouncedHandleScroll);
+      clearTimeout(scrollTimeout);
+    };
   }, []);
 
   return { activeSection, handleSectionClick };
