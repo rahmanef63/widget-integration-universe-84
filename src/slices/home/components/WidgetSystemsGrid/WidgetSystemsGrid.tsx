@@ -37,7 +37,7 @@ const WidgetSystemsGrid: React.FC = () => {
               key={index}
               title={system.title}
               description={system.description}
-              icon={<AnimatedIcon icon={renderIcon(system.icon)} />}
+              icon={<AnimatedIcon icon={system.icon} />}
               index={index}
             />
           ))}

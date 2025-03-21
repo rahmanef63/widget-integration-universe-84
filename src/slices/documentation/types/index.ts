@@ -3,7 +3,7 @@ export interface DocSection {
   id: string;
   title: string;
   icon: string;
-  items: DocSectionItem[];
+  subsections: DocSectionItem[];
 }
 
 export interface DocSectionItem {

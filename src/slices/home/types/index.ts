@@ -16,6 +16,9 @@ export interface HeroProps {
   secondaryCtaLink?: string;
 }
 
+// Re-export Feature from core to ensure type consistency
+export type { Feature };
+
 export interface FeatureSectionData {
   title: string;
   subtitle: string;
