@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import DocCodeBlock from '../DocCodeBlock/DocCodeBlock';
+import { WIDGET_DEVELOPMENT_CONTENT } from '../../constants/content';
 
 interface WidgetDevelopmentSectionProps {
   inView: boolean;
@@ -12,6 +13,8 @@ const WidgetDevelopmentSection: React.FC<WidgetDevelopmentSectionProps> = ({
   inView,
   widgetComponentCode 
 }) => {
+  const { title, sections } = WIDGET_DEVELOPMENT_CONTENT;
+  
   return (
     <section id="widget-development" className="scroll-mt-24">
       <motion.div
@@ -20,13 +23,13 @@ const WidgetDevelopmentSection: React.FC<WidgetDevelopmentSectionProps> = ({
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <h2 className="text-2xl md:text-3xl font-display font-medium mb-6 pb-2 border-b">
-          Widget Development
+          {title}
         </h2>
         
         <div id="widget-development-setup" className="mb-8 scroll-mt-24">
-          <h3 className="text-xl font-medium mb-4">Development Setup</h3>
+          <h3 className="text-xl font-medium mb-4">{sections.setup.title}</h3>
           <p className="mb-4 text-muted-foreground">
-            Setting up your development environment is the first step to creating powerful widgets. 
+            {sections.setup.description}
             Our platform provides tools and scaffolding to streamline the process.
           </p>
           <div className="mb-6 space-y-3 text-muted-foreground">
@@ -43,16 +46,17 @@ const WidgetDevelopmentSection: React.FC<WidgetDevelopmentSectionProps> = ({
         </div>
         
         <div id="component-structure" className="mb-8 scroll-mt-24">
-          <h3 className="text-xl font-medium mb-4">Component Structure</h3>
+          <h3 className="text-xl font-medium mb-4">{sections.componentStructure.title}</h3>
           <p className="mb-4 text-muted-foreground">
-            Widgets follow a standardized component structure to ensure compatibility and 
-            optimal performance across all hosting platforms.
+            {sections.componentStructure.description}
+            across all hosting platforms.
           </p>
+          
           <DocCodeBlock
-            language="typescript"
             code={widgetComponentCode}
             className="mb-6"
           />
+          
           <div className="space-y-3 text-muted-foreground">
             <p>The widget component structure includes:</p>
             <ul className="list-disc pl-6 space-y-2">
@@ -65,9 +69,9 @@ const WidgetDevelopmentSection: React.FC<WidgetDevelopmentSectionProps> = ({
         </div>
         
         <div id="testing-widgets" className="scroll-mt-24">
-          <h3 className="text-xl font-medium mb-4">Testing Widgets</h3>
+          <h3 className="text-xl font-medium mb-4">{sections.testing.title}</h3>
           <p className="mb-4 text-muted-foreground">
-            Comprehensive testing ensures that widgets function correctly across all platforms and environments.
+            {sections.testing.description}
           </p>
           <div className="space-y-4 text-muted-foreground">
             <p>Our testing framework provides tools for:</p>

@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import DocCodeBlock from '../DocCodeBlock/DocCodeBlock';
+import { WIDGET_STORE_CONTENT } from '../../constants/content';
 
 interface WidgetStoreSectionProps {
   inView: boolean;
@@ -12,6 +13,8 @@ const WidgetStoreSection: React.FC<WidgetStoreSectionProps> = ({
   inView,
   metadataCode 
 }) => {
+  const { title, sections } = WIDGET_STORE_CONTENT;
+  
   return (
     <section id="widget-store" className="scroll-mt-24">
       <motion.div
@@ -20,13 +23,13 @@ const WidgetStoreSection: React.FC<WidgetStoreSectionProps> = ({
         transition={{ duration: 0.5, delay: 0.3 }}
       >
         <h2 className="text-2xl md:text-3xl font-display font-medium mb-6 pb-2 border-b">
-          Widget Store
+          {title}
         </h2>
         
         <div id="publishing-widgets" className="mb-8 scroll-mt-24">
-          <h3 className="text-xl font-medium mb-4">Publishing Widgets</h3>
+          <h3 className="text-xl font-medium mb-4">{sections.publishing.title}</h3>
           <p className="mb-4 text-muted-foreground">
-            Once you've developed and tested your widget, you can publish it to the Widget Store
+            {sections.publishing.description}
             to make it available to all platform users.
           </p>
           <div className="space-y-3 text-muted-foreground">
@@ -44,9 +47,9 @@ const WidgetStoreSection: React.FC<WidgetStoreSectionProps> = ({
         </div>
         
         <div id="store-api" className="mb-8 scroll-mt-24">
-          <h3 className="text-xl font-medium mb-4">Store API</h3>
+          <h3 className="text-xl font-medium mb-4">{sections.storeApi.title}</h3>
           <p className="mb-4 text-muted-foreground">
-            The Widget Store API allows programmatic access to widget discovery, installation, and management.
+            {sections.storeApi.description}
           </p>
           <div className="space-y-3 text-muted-foreground">
             <p>Key API features include:</p>
@@ -60,15 +63,16 @@ const WidgetStoreSection: React.FC<WidgetStoreSectionProps> = ({
         </div>
         
         <div id="metadata-management" className="scroll-mt-24">
-          <h3 className="text-xl font-medium mb-4">Metadata Management</h3>
+          <h3 className="text-xl font-medium mb-4">{sections.metadata.title}</h3>
           <p className="mb-4 text-muted-foreground">
-            Widget metadata provides essential information about your widget and determines how it appears in the store.
+            {sections.metadata.description}
           </p>
+          
           <DocCodeBlock
-            language="json"
             code={metadataCode}
             className="mb-6"
           />
+          
           <div className="space-y-3 text-muted-foreground">
             <p>Important metadata fields include:</p>
             <ul className="list-disc pl-6 space-y-2">

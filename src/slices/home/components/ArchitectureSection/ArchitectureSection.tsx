@@ -3,12 +3,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import ArchitectureDiagram from '@/components/ArchitectureDiagram';
+import { ARCHITECTURE_CONTENT } from '../../constants/features';
 
 const ArchitectureSection: React.FC = () => {
   const [architectureRef, architectureInView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+  
+  const { title, subtitle, description } = ARCHITECTURE_CONTENT;
 
   return (
     <section id="integration" ref={architectureRef} className="py-20 md:py-32 bg-secondary/30 relative overflow-hidden">
@@ -20,7 +23,7 @@ const ArchitectureSection: React.FC = () => {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="text-sm font-medium px-3 py-1 rounded-full bg-primary/10 text-primary inline-block"
           >
-            Enterprise Architecture
+            {subtitle}
           </motion.span>
           
           <motion.h2
@@ -29,7 +32,7 @@ const ArchitectureSection: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
             className="mt-4 text-3xl md:text-4xl font-display font-medium"
           >
-            Widget Integration Architecture
+            {title}
           </motion.h2>
           
           <motion.p
@@ -38,7 +41,7 @@ const ArchitectureSection: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
             className="mt-4 text-lg text-muted-foreground"
           >
-            Visualize how widgets flow through the ecosystem from development to integration
+            {description}
           </motion.p>
         </div>
 

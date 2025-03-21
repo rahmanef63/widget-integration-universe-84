@@ -3,21 +3,20 @@ export interface DocSection {
   id: string;
   title: string;
   icon: string;
-  subsections: DocSubsection[];
+  items: DocSectionItem[];
 }
 
-export interface DocSubsection {
+export interface DocSectionItem {
   id: string;
   title: string;
 }
 
-export interface DocCodeSample {
-  id: string;
-  title: string;
+export interface DocCodeBlockProps {
   code: string;
-  language: string;
+  language?: string;
+  className?: string;
 }
 
-export interface DocContent {
-  sections: Record<string, JSX.Element>;
+export interface DocContentSectionProps {
+  inView: boolean;
 }

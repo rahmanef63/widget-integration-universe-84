@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import DocCodeBlock from '../DocCodeBlock/DocCodeBlock';
+import { API_REFERENCE_CONTENT } from '../../constants/content';
 
 interface ApiReferenceSectionProps {
   inView: boolean;
@@ -12,6 +13,8 @@ const ApiReferenceSection: React.FC<ApiReferenceSectionProps> = ({
   inView,
   widgetApiCode 
 }) => {
+  const { title, sections } = API_REFERENCE_CONTENT;
+  
   return (
     <section id="api" className="scroll-mt-24">
       <motion.div
@@ -20,19 +23,20 @@ const ApiReferenceSection: React.FC<ApiReferenceSectionProps> = ({
         transition={{ duration: 0.5, delay: 0.7 }}
       >
         <h2 className="text-2xl md:text-3xl font-display font-medium mb-6 pb-2 border-b">
-          API Reference
+          {title}
         </h2>
         
         <div id="widget-api" className="mb-8 scroll-mt-24">
-          <h3 className="text-xl font-medium mb-4">Widget API</h3>
+          <h3 className="text-xl font-medium mb-4">{sections.widgetApi.title}</h3>
           <p className="mb-4 text-muted-foreground">
-            The Widget API provides a standardized interface for widgets to interact with the platform and host application.
+            {sections.widgetApi.description}
           </p>
-          <DocCodeBlock
-            language="typescript"
+          
+          <DocCodeBlock 
             code={widgetApiCode}
             className="mb-6"
           />
+          
           <div className="space-y-3 text-muted-foreground">
             <p>Key API components include:</p>
             <ul className="list-disc pl-6 space-y-2">
@@ -46,9 +50,9 @@ const ApiReferenceSection: React.FC<ApiReferenceSectionProps> = ({
         </div>
         
         <div id="store-api-ref" className="mb-8 scroll-mt-24">
-          <h3 className="text-xl font-medium mb-4">Store API</h3>
+          <h3 className="text-xl font-medium mb-4">{sections.storeApi.title}</h3>
           <p className="mb-4 text-muted-foreground">
-            The Store API allows applications to interact with the Widget Store programmatically.
+            {sections.storeApi.description}
           </p>
           <div className="space-y-3 text-muted-foreground">
             <p>Store API endpoints include:</p>
@@ -73,9 +77,9 @@ const response = await widgetStore.search({
         </div>
         
         <div id="dashboard-api" className="scroll-mt-24">
-          <h3 className="text-xl font-medium mb-4">Dashboard API</h3>
+          <h3 className="text-xl font-medium mb-4">{sections.dashboardApi.title}</h3>
           <p className="mb-4 text-muted-foreground">
-            The Dashboard API provides methods for managing and configuring widgets within a dashboard.
+            {sections.dashboardApi.description}
           </p>
           <div className="space-y-3 text-muted-foreground">
             <p>Dashboard API features include:</p>

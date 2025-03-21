@@ -1,33 +1,14 @@
 
 import React from 'react';
 import FeatureSection from '@/components/FeatureSection';
-import type { Feature } from '@/core/types';
+import { INTEGRATION_FEATURES } from '../../constants/features';
 
 const IntegrationSection: React.FC = () => {
-  // Features for sections
-  const integrationFeatures: Feature[] = [
-    {
-      title: 'Standardized Interfaces',
-      description: 'TypeScript-based contracts ensure compatibility across all widgets and platforms',
-      icon: 'Code',
-    },
-    {
-      title: 'Seamless Integration',
-      description: 'Widget loading system with automatic dependency resolution and version management',
-      icon: 'Layout',
-    },
-    {
-      title: 'Enterprise Security',
-      description: 'Robust sandboxing with fine-grained permission controls and isolation',
-      icon: 'Shield',
-    },
-  ];
-
   return (
     <FeatureSection
       title="Seamless Integration Across Platforms"
       subtitle="Advanced Integration"
-      features={integrationFeatures}
+      features={INTEGRATION_FEATURES}
       illustration={
         <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10 glassmorphism">
           <img

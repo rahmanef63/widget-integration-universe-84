@@ -1,24 +1,17 @@
 
 import React from 'react';
-import Hero from '../components/Hero/Hero';
-import WidgetShowcase from '../components/WidgetShowcase/WidgetShowcase';
-import FeatureSection from '@/shared/components/FeatureSection/FeatureSection';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { ROUTES } from '@/core/constants/routes';
+import HeroSection from '../components/HeroSection';
+import FeatureSection from '@/shared/components/FeatureSection/FeatureSection';
+import WidgetShowcase from '../components/WidgetShowcase/WidgetShowcase';
+import ArchitectureSection from '../components/ArchitectureSection';
+import WidgetSystemsGrid from '../components/WidgetSystemsGrid';
+import IntegrationSection from '../components/IntegrationSection';
+import CtaSection from '../components/CtaSection';
 import { Feature } from '@/core/types';
 
 const Home: React.FC = () => {
-  // Hero data
-  const heroData = {
-    title: "Enterprise Widget Platform",
-    subtitle: "A comprehensive solution for building, managing, and integrating enterprise-grade widgets in your applications.",
-    ctaText: "Explore Ecosystem",
-    ctaLink: ROUTES.ECOSYSTEM,
-    secondaryCtaText: "View Documentation",
-    secondaryCtaLink: ROUTES.DOCUMENTATION
-  };
-
   // Feature sections data
   const featureSections = [
     {
@@ -71,14 +64,9 @@ const Home: React.FC = () => {
       <Header />
       
       <main>
-        <Hero
-          title={heroData.title}
-          subtitle={heroData.subtitle}
-          ctaText={heroData.ctaText}
-          ctaLink={heroData.ctaLink}
-          secondaryCtaText={heroData.secondaryCtaText}
-          secondaryCtaLink={heroData.secondaryCtaLink}
-        />
+        <HeroSection />
+        
+        <ArchitectureSection />
         
         <div id="features">
           {featureSections.map((section, index) => (
@@ -92,10 +80,16 @@ const Home: React.FC = () => {
           ))}
         </div>
         
+        <IntegrationSection />
+        
+        <WidgetSystemsGrid />
+        
         <WidgetShowcase
           title="Explore Our Widget Ecosystem"
           subtitle="Discover a wide range of enterprise-ready widgets to enhance your dashboards and applications."
         />
+        
+        <CtaSection />
       </main>
       
       <Footer />

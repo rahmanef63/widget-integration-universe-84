@@ -3,12 +3,15 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import WaveAnimation from './WaveAnimation';
+import { HERO_CONTENT } from '../../constants/features';
+import WaveAnimation from '../WaveAnimation/WaveAnimation';
 
 const HeroSection: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const [scrollIndicatorVisible, setScrollIndicatorVisible] = useState(true);
   const { scrollYProgress } = useScroll();
+  
+  const { tagline, title, description, primaryButton, secondaryButton } = HERO_CONTENT;
   
   // Parallax effect for hero section
   const heroContentY = useTransform(scrollYProgress, [0, 0.2], [0, 50]);
@@ -48,7 +51,7 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <span className="text-sm font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
-              Enterprise Widget Integration
+              {tagline}
             </span>
           </motion.div>
 
@@ -58,7 +61,7 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="mt-6 text-4xl md:text-6xl font-display font-semibold tracking-tight leading-tight"
           >
-            Seamless <span className="text-gradient">Widget Integration</span> for Enterprise Applications
+            <span className="text-gradient">{title.split(' ').slice(0, 2).join(' ')}</span> {title.split(' ').slice(2).join(' ')}
           </motion.h1>
 
           <motion.p
@@ -67,7 +70,7 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto"
           >
-            A comprehensive platform for developing, distributing, and integrating enterprise-grade widgets with unmatched security, performance, and compatibility.
+            {description}
           </motion.p>
 
           <motion.div
@@ -77,20 +80,20 @@ const HeroSection: React.FC = () => {
             className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link
-              to="#integration"
+              to={primaryButton.link}
               onClick={(e) => {
                 e.preventDefault();
                 scrollToContent();
               }}
               className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-105 transition-all duration-300"
             >
-              Explore Integration
+              {primaryButton.text}
             </Link>
             <Link
-              to="/documentation"
+              to={secondaryButton.link}
               className="px-6 py-3 rounded-full bg-secondary text-secondary-foreground font-medium hover:bg-secondary/80 transition-all duration-300"
             >
-              View Documentation
+              {secondaryButton.text}
             </Link>
           </motion.div>
         </div>
