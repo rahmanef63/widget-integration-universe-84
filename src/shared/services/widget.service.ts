@@ -1,7 +1,5 @@
-
 import { StorageService, STORAGE_KEYS } from './storage.service';
 import { WidgetBase } from '@/core/types';
-import { Code, Database, Globe, Layout, Server, Shield, Zap } from 'lucide-react';
 
 // Initial widget data for demonstration
 const initialWidgets: WidgetBase[] = [
@@ -9,43 +7,43 @@ const initialWidgets: WidgetBase[] = [
     id: 'widget-analytics',
     title: 'Analytics Dashboard',
     description: 'Comprehensive analytics with real-time data visualization and insights.',
-    icon: Zap
+    icon: 'Zap'
   },
   {
     id: 'widget-database',
     title: 'Database Explorer',
     description: 'Explore and query databases with intuitive interface and schema visualization.',
-    icon: Database
+    icon: 'Database'
   },
   {
     id: 'widget-server',
     title: 'Server Monitoring',
     description: 'Real-time server performance metrics and health status visualization.',
-    icon: Server
+    icon: 'Server'
   },
   {
     id: 'widget-security',
     title: 'Security Scanner',
     description: 'Scan for vulnerabilities and security issues in your infrastructure.',
-    icon: Shield
+    icon: 'Shield'
   },
   {
     id: 'widget-code',
     title: 'Code Analyzer',
     description: 'Analyze code quality, find bugs and suggest improvements automatically.',
-    icon: Code
+    icon: 'Code'
   },
   {
     id: 'widget-globe',
     title: 'Global CDN',
     description: 'Manage content delivery network with global reach and edge optimization.',
-    icon: Globe
+    icon: 'Globe2'
   },
   {
     id: 'widget-layout',
     title: 'Layout Builder',
     description: 'Drag-and-drop layout builder for creating custom dashboards.',
-    icon: Layout
+    icon: 'Layout'
   }
 ];
 

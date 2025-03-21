@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Code, Shield, Layout } from 'lucide-react';
 import FeatureSection from '@/components/FeatureSection';
 import type { Feature } from '@/core/types';
 
@@ -10,17 +9,17 @@ const IntegrationSection: React.FC = () => {
     {
       title: 'Standardized Interfaces',
       description: 'TypeScript-based contracts ensure compatibility across all widgets and platforms',
-      icon: Code,
+      icon: 'Code',
     },
     {
       title: 'Seamless Integration',
       description: 'Widget loading system with automatic dependency resolution and version management',
-      icon: Layout,
+      icon: 'Layout',
     },
     {
       title: 'Enterprise Security',
       description: 'Robust sandboxing with fine-grained permission controls and isolation',
-      icon: Shield,
+      icon: 'Shield',
     },
   ];
 
