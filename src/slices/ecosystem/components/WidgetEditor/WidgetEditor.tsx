@@ -25,6 +25,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Widget, WidgetEditorProps } from '../../types';
 import { Code, Settings, Eye, File } from 'lucide-react';
+import { renderIcon } from '@/shared/icon-picker/utils';
 
 // Define form schema
 const widgetFormSchema = z.object({
@@ -199,8 +200,8 @@ const WidgetEditor: React.FC<WidgetEditorProps> = ({ widget, isOpen, onClose, on
                 <div className="border rounded-lg p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 flex items-center justify-center rounded-md bg-primary/10 text-primary">
-                      {/* Placeholder for widget icon */}
-                      <div dangerouslySetInnerHTML={{ __html: widget.icon }} />
+                      {/* Render widget icon using renderIcon utility */}
+                      {typeof widget.icon === 'string' ? renderIcon(widget.icon, { size: 20 }) : widget.icon}
                     </div>
                     <div>
                       <h3 className="font-medium">{form.watch('title')}</h3>

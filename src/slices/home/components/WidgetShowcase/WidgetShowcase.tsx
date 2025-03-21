@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import WidgetCard from '@/components/WidgetCard';
 import { WidgetService } from '@/shared/services/widget.service';
 import { WidgetBase } from '@/core/types';
+import { renderIcon } from '@/shared/icon-picker/utils';
 
 interface WidgetShowcaseProps {
   title: string;
@@ -77,18 +78,16 @@ const WidgetShowcase: React.FC<WidgetShowcaseProps> = ({
           animate={inView ? "visible" : "hidden"}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {widgets.map((widget, index) => {
-            const Icon = widget.icon;
-            return (
-              <motion.div key={widget.id} variants={itemVariants}>
-                <WidgetCard
-                  title={widget.title}
-                  description={widget.description}
-                  icon={<Icon size={24} />}
-                />
-              </motion.div>
-            );
-          })}
+          {widgets.map((widget, index) => (
+            <motion.div key={widget.id} variants={itemVariants}>
+              <WidgetCard
+                title={widget.title}
+                description={widget.description}
+                icon={typeof widget.icon === 'string' ? widget.icon : widget.icon}
+                index={index}
+              />
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>

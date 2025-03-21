@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
+import { renderIcon } from '@/shared/icon-picker/utils';
 
 type AnimationType = 'pulse' | 'spin' | 'bounce' | 'wave' | 'none';
 
 interface AnimatedIconProps {
-  icon: LucideIcon;
+  icon: LucideIcon | string;
   size?: number;
   animation?: AnimationType;
   delay?: number;
@@ -16,7 +17,7 @@ interface AnimatedIconProps {
 }
 
 const AnimatedIcon: React.FC<AnimatedIconProps> = ({
-  icon: Icon,
+  icon,
   size = 24,
   animation = 'none',
   delay = 0,
@@ -32,7 +33,12 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
 
   // Only render animations on client side to avoid hydration issues
   if (!isClient) {
-    return <Icon size={size} className={className} />;
+    if (typeof icon === 'string') {
+      return renderIcon(icon, { size, className });
+    } else {
+      const IconComponent = icon as LucideIcon;
+      return <IconComponent size={size} className={className} />;
+    }
   }
 
   // Animation variants
@@ -93,6 +99,15 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
 
   const { animate, ...animationVariants } = getAnimationVariants();
 
+  const renderAnimatedIcon = () => {
+    if (typeof icon === 'string') {
+      return renderIcon(icon, { size });
+    } else {
+      const IconComponent = icon as LucideIcon;
+      return <IconComponent size={size} />;
+    }
+  };
+
   return (
     <motion.div
       animate={animate}
@@ -100,7 +115,7 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
       style={{ display: 'inline-flex', color }}
       className={className}
     >
-      <Icon size={size} />
+      {renderAnimatedIcon()}
     </motion.div>
   );
 };

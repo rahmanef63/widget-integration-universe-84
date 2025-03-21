@@ -1,10 +1,8 @@
 
-import { LucideIcon } from 'lucide-react';
-
 export interface DocSection {
   id: string;
   title: string;
-  icon: LucideIcon;
+  icon: string;
   subsections: DocSubsection[];
 }
 

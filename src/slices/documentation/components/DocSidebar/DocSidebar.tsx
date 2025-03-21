@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DocSection } from '../../types';
-import { renderIcon } from '@/shared/icon-picker';
+import { renderIcon } from '@/shared/icon-picker/utils';
 
 interface DocSidebarProps {
   filteredSections: DocSection[];
@@ -37,7 +37,7 @@ const DocSidebar: React.FC<DocSidebarProps> = ({
               )}
             >
               {section.icon && <span className="mr-2">
-                {React.createElement(section.icon, { size: 18 })}
+                {renderIcon(section.icon, { size: 18 })}
               </span>}
               <span>{section.title}</span>
               {activeSection === section.id && (

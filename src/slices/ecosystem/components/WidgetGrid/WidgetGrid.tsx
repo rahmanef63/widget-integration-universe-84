@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import WidgetCard from '@/components/WidgetCard';
 import WidgetEditor from '../WidgetEditor/WidgetEditor';
 import { Widget } from '@/slices/ecosystem/types';
-import { Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { renderIcon } from '@/shared/icon-picker/utils';
 
 interface WidgetGridProps {
   widgets: Widget[];
@@ -68,7 +68,7 @@ const WidgetGrid: React.FC<WidgetGridProps> = ({
                 className="h-8 w-8 p-0"
                 onClick={() => handleEditClick(widget)}
               >
-                <Edit size={14} />
+                {renderIcon("Edit", { size: 14 })}
                 <span className="sr-only">Edit</span>
               </Button>
             </div>

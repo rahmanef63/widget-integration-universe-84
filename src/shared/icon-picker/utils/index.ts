@@ -1,3 +1,4 @@
+
 import {
   File,
   LayoutDashboard,
@@ -11,7 +12,6 @@ import {
   Plus,
   Edit,
   Trash2,
-  Eye,
   EyeOff,
   Save,
   X,
@@ -74,7 +74,6 @@ import {
   TrendingUp,
   TrendingDown,
   ListOrdered,
-  ListUnordered,
   Code,
   Terminal,
   GitBranch,
@@ -140,10 +139,7 @@ import {
   Archive,
   Mailbox,
   Inbox,
-  Outbox,
   Send,
-  InboxCheck,
-  InboxX,
   Clipboard,
   FileText,
   FilePlus,
@@ -156,9 +152,11 @@ import {
   Database,
   SlidersHorizontal,
   Eye,
-  LucideIcon,
+  type LucideIcon,
+  type LucideProps,
 } from "lucide-react";
 
+import React from "react";
 import { IconOption } from "../types";
 
 // Define all available icons
@@ -238,7 +236,6 @@ export const iconOptions: IconOption[] = [
   { name: "TrendingUp", icon: TrendingUp },
   { name: "TrendingDown", icon: TrendingDown },
   { name: "ListOrdered", icon: ListOrdered },
-  { name: "ListUnordered", icon: ListUnordered },
   { name: "Code", icon: Code },
   { name: "Terminal", icon: Terminal },
   { name: "GitBranch", icon: GitBranch },
@@ -304,10 +301,7 @@ export const iconOptions: IconOption[] = [
   { name: "Archive", icon: Archive },
   { name: "Mailbox", icon: Mailbox },
   { name: "Inbox", icon: Inbox },
-  { name: "Outbox", icon: Outbox },
   { name: "Send", icon: Send },
-  { name: "InboxCheck", icon: InboxCheck },
-  { name: "InboxX", icon: InboxX },
   { name: "Clipboard", icon: Clipboard },
   { name: "FileText", icon: FileText },
   { name: "FilePlus", icon: FilePlus },
@@ -328,8 +322,9 @@ export const getIconByName = (name: string): LucideIcon | undefined => {
 };
 
 // Utility function to render an icon by name
-export const renderIcon = (name: string): React.ReactNode => {
+export const renderIcon = (name: string | undefined, props?: LucideProps): React.ReactNode => {
+  if (!name) return null;
   const icon = getIconByName(name);
   if (!icon) return null;
-  return React.createElement(icon, { className: "h-4 w-4" });
+  return React.createElement(icon, { className: "h-4 w-4", ...props });
 };

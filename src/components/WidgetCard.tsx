@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useInView } from 'react-intersection-observer';
-import { renderIcon } from '@/shared/icon-picker';
+import { renderIcon } from '@/shared/icon-picker/utils';
 import { LucideIcon } from 'lucide-react';
 
 interface WidgetCardProps {
@@ -34,6 +34,18 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  const renderCardIcon = () => {
+    if (typeof icon === 'string') {
+      return renderIcon(icon, { size: 24 });
+    } else if (React.isValidElement(icon)) {
+      return icon;
+    } else if (typeof icon === 'function') {
+      const IconComponent = icon as LucideIcon;
+      return <IconComponent size={24} />;
+    }
+    return null;
+  };
 
   return (
     <motion.div
@@ -69,13 +81,7 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
         "relative flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary",
         layout === 'horizontal' ? 'flex-shrink-0' : 'mb-4'
       )}>
-        {typeof icon === 'string' ? (
-          renderIcon(icon)
-        ) : typeof icon === 'function' ? (
-          React.createElement(icon as LucideIcon, { size: 24 })
-        ) : (
-          icon
-        )}
+        {renderCardIcon()}
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={isHovered ? { scale: 1.2, opacity: 0.3 } : { scale: 0, opacity: 0 }}

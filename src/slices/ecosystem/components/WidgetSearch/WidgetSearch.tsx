@@ -1,10 +1,9 @@
 
 import React from 'react';
-import { SearchIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Grid3X3Icon, ListIcon } from 'lucide-react';
+import { renderIcon } from '@/shared/icon-picker/utils';
 
 interface WidgetSearchProps {
   searchTerm: string;
@@ -28,7 +27,7 @@ const WidgetSearch: React.FC<WidgetSearchProps> = ({
   return (
     <div className="flex flex-col md:flex-row gap-4 mb-8">
       <div className="relative flex-grow">
-        <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+        {renderIcon("Search", { className: "absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground", size: 18 })}
         <Input
           placeholder="Search widgets..."
           className="pl-10"
@@ -56,7 +55,7 @@ const WidgetSearch: React.FC<WidgetSearchProps> = ({
             onClick={() => onViewModeChange('grid')}
             className="rounded-none"
           >
-            <Grid3X3Icon size={18} />
+            {renderIcon("Grid", { size: 18 })}
           </Button>
           <Button
             variant={viewMode === 'list' ? 'default' : 'ghost'}
@@ -64,7 +63,7 @@ const WidgetSearch: React.FC<WidgetSearchProps> = ({
             onClick={() => onViewModeChange('list')}
             className="rounded-none"
           >
-            <ListIcon size={18} />
+            {renderIcon("List", { size: 18 })}
           </Button>
         </div>
       </div>
