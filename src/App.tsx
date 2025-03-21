@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { UserPreferencesProvider } from "@/shared/store/user-preferences.context";
 import { ROUTES } from "@/core/constants/routes";
@@ -28,6 +28,7 @@ const App = () => (
             <AnimatePresence mode="wait">
               <Routes>
                 <Route path={ROUTES.HOME} element={<Home />} />
+                <Route path="/index" element={<Navigate to={ROUTES.HOME} replace />} />
                 <Route path={ROUTES.DOCUMENTATION} element={<Documentation />} />
                 <Route path={ROUTES.ECOSYSTEM} element={<Ecosystem />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
