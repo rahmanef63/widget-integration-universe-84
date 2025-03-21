@@ -85,7 +85,7 @@ const WidgetShowcase: React.FC<WidgetShowcaseProps> = ({
                   title={widget.title}
                   description={widget.description}
                   icon={<Icon size={24} />}
-                  delay={index * 100}
+                  delay={index * 0.1}
                 />
               </motion.div>
             );
