@@ -1,7 +1,6 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ChevronDown, Code, Database, Globe, Layout, LucideProps, Server, Shield, Zap } from 'lucide-react';
+import { ChevronDown, Code, Database, Globe, Layout, Server, Shield, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import WidgetCard from '@/components/WidgetCard';
@@ -11,6 +10,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AnimatedIcon from '@/components/AnimatedIcon';
 import { useInView } from 'react-intersection-observer';
+import { LucideIcon } from 'lucide-react';
 
 // Custom component for the hero wave animation
 const WaveAnimation = () => {
@@ -42,11 +42,11 @@ const WaveAnimation = () => {
   );
 };
 
-// Interface for widget data
+// Interface for widget data - updated to use LucideIcon type
 interface WidgetSystem {
   title: string;
   description: string;
-  icon: React.FC<LucideProps>;
+  icon: LucideIcon;
 }
 
 const Index: React.FC = () => {
