@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Globe, Database, Layout, Shield, Server, Zap } from 'lucide-react';
 import WidgetCard from '@/components/WidgetCard';
 import AnimatedIcon from '@/components/AnimatedIcon';
-import { LucideIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface WidgetSystem {
   title: string;
@@ -71,13 +71,13 @@ const WidgetSystemsGrid: React.FC = () => {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-container">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {widgetSystems.map((system, index) => (
             <WidgetCard
               key={index}
               title={system.title}
               description={system.description}
-              icon={<AnimatedIcon icon={system.icon} animation="pulse" />}
+              icon={<AnimatedIcon icon={system.icon} />}
               index={index}
             />
           ))}

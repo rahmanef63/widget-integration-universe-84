@@ -2,7 +2,7 @@
 import React from 'react';
 import { Code, Shield, Layout } from 'lucide-react';
 import FeatureSection from '@/components/FeatureSection';
-import { Feature } from '@/core/types';
+import type { Feature } from '@/core/types';
 
 const IntegrationSection: React.FC = () => {
   // Features for sections

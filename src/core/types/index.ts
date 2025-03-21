@@ -56,3 +56,36 @@ export interface UserPreferences {
   favoriteWidgets: string[];
   notifications: boolean;
 }
+
+// Extended types for API integration
+export interface Widget extends WidgetBase {
+  category: string;
+  author: string;
+  version: string;
+  createdAt: string;
+  updatedAt: string;
+  dependencies: string[];
+  config: Record<string, unknown>;
+  permissions: string[];
+}
+
+export interface UserPreference {
+  id: string;
+  userId: string;
+  theme: Theme;
+  layout: string;
+  widgets: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Dashboard {
+  id: string;
+  name: string;
+  description: string;
+  userId: string;
+  layout: Record<string, unknown>;
+  widgets: Record<string, unknown>[];
+  createdAt: string;
+  updatedAt: string;
+}

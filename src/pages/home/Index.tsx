@@ -10,15 +10,17 @@ import CtaSection from './components/CtaSection';
 
 const Index: React.FC = () => {
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <Header />
-      <HeroSection />
-      <WidgetSystemsGrid />
-      <ArchitectureSection />
-      <IntegrationSection />
-      <CtaSection />
+      <main>
+        <HeroSection />
+        <WidgetSystemsGrid />
+        <ArchitectureSection />
+        <IntegrationSection />
+        <CtaSection />
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

@@ -76,12 +76,16 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
             className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <a
-              href="#integration"
+            <Link
+              to="#integration"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToContent();
+              }}
               className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-105 transition-all duration-300"
             >
               Explore Integration
-            </a>
+            </Link>
             <Link
               to="/documentation"
               className="px-6 py-3 rounded-full bg-secondary text-secondary-foreground font-medium hover:bg-secondary/80 transition-all duration-300"
@@ -96,7 +100,7 @@ const HeroSection: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: scrollIndicatorVisible ? 1 : 0 }}
           transition={{ duration: 0.3 }}
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
+          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center cursor-pointer"
           onClick={scrollToContent}
         >
           <span className="text-sm text-muted-foreground mb-2">Scroll to explore</span>
