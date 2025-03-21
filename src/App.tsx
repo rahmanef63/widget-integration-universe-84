@@ -5,30 +5,39 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import Index from "./pages/Index";
-import Documentation from "./pages/Documentation";
-import Ecosystem from "./pages/Ecosystem";
-import NotFound from "./pages/NotFound";
+import { UserPreferencesProvider } from "@/shared/store/user-preferences.context";
+import { ROUTES } from "@/core/constants/routes";
+
+// Lazy load pages for better performance
+import React from "react";
+const Home = React.lazy(() => import("@/slices/home/pages/Home"));
+const Documentation = React.lazy(() => import("@/slices/documentation/pages/Documentation"));
+const Ecosystem = React.lazy(() => import("@/slices/ecosystem/pages/Ecosystem"));
+const NotFound = React.lazy(() => import("@/slices/error/pages/NotFound"));
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AnimatePresence mode="wait">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/documentation" element={<Documentation />} />
-            <Route path="/ecosystem" element={<Ecosystem />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AnimatePresence>
-      </BrowserRouter>
-    </TooltipProvider>
+    <UserPreferencesProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <React.Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
+            <AnimatePresence mode="wait">
+              <Routes>
+                <Route path={ROUTES.HOME} element={<Home />} />
+                <Route path={ROUTES.DOCUMENTATION} element={<Documentation />} />
+                <Route path={ROUTES.ECOSYSTEM} element={<Ecosystem />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
+              </Routes>
+            </AnimatePresence>
+          </React.Suspense>
+        </BrowserRouter>
+      </TooltipProvider>
+    </UserPreferencesProvider>
   </QueryClientProvider>
 );
 
