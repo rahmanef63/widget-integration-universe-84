@@ -1,14 +1,4 @@
 
-import { 
-  Layers, 
-  Code, 
-  Package, 
-  Shield, 
-  Database, 
-  Settings, 
-  GitBranch, 
-  Server 
-} from 'lucide-react';
 import { DocSection } from '../types';
 
 // Documentation sections data
@@ -16,7 +6,7 @@ export const DOC_SECTIONS: DocSection[] = [
   {
     id: 'intro',
     title: 'Introduction',
-    icon: Layers,
+    icon: 'Layers',
     subsections: [
       { id: 'overview', title: 'Overview' },
       { id: 'architecture', title: 'Architecture' },
@@ -26,7 +16,7 @@ export const DOC_SECTIONS: DocSection[] = [
   {
     id: 'integration',
     title: 'Integration Guide',
-    icon: Code,
+    icon: 'Code',
     subsections: [
       { id: 'widget-interface', title: 'Widget Interface' },
       { id: 'typescript-integration', title: 'TypeScript Integration' },
@@ -36,7 +26,7 @@ export const DOC_SECTIONS: DocSection[] = [
   {
     id: 'widget-development',
     title: 'Widget Development',
-    icon: Package,
+    icon: 'Package',
     subsections: [
       { id: 'development-setup', title: 'Development Setup' },
       { id: 'component-structure', title: 'Component Structure' },
@@ -46,7 +36,7 @@ export const DOC_SECTIONS: DocSection[] = [
   {
     id: 'widget-store',
     title: 'Widget Store',
-    icon: Database,
+    icon: 'Database',
     subsections: [
       { id: 'publishing-widgets', title: 'Publishing Widgets' },
       { id: 'store-api', title: 'Store API' },
@@ -56,7 +46,7 @@ export const DOC_SECTIONS: DocSection[] = [
   {
     id: 'dashboard-integration',
     title: 'Dashboard Integration',
-    icon: Server,
+    icon: 'Server',
     subsections: [
       { id: 'widget-loader', title: 'Widget Loader' },
       { id: 'sandboxing', title: 'Sandboxing' },
@@ -66,7 +56,7 @@ export const DOC_SECTIONS: DocSection[] = [
   {
     id: 'security',
     title: 'Security',
-    icon: Shield,
+    icon: 'Shield',
     subsections: [
       { id: 'authentication', title: 'Authentication' },
       { id: 'permissions', title: 'Permissions' },
@@ -76,7 +66,7 @@ export const DOC_SECTIONS: DocSection[] = [
   {
     id: 'best-practices',
     title: 'Best Practices',
-    icon: Settings,
+    icon: 'Settings',
     subsections: [
       { id: 'performance', title: 'Performance' },
       { id: 'architecture-patterns', title: 'Architecture Patterns' },
@@ -86,7 +76,7 @@ export const DOC_SECTIONS: DocSection[] = [
   {
     id: 'api',
     title: 'API Reference',
-    icon: GitBranch,
+    icon: 'GitBranch',
     subsections: [
       { id: 'widget-api', title: 'Widget API' },
       { id: 'store-api-ref', title: 'Store API' },

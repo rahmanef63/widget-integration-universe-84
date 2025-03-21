@@ -1,6 +1,4 @@
 
-import { LucideIcon } from 'lucide-react';
-
 /**
  * Core application types
  */
@@ -30,13 +28,13 @@ export interface WidgetBase {
   id: string;
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: string;
 }
 
 export interface Feature {
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: string;
 }
 
 export interface Section {

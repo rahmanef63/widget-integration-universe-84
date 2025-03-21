@@ -1,11 +1,10 @@
 
-import { Feature, WidgetBase } from '@/core/types';
-import { LucideIcon } from 'lucide-react';
+import { Feature } from '@/core/types';
 
 export interface WidgetSystem {
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: string;
 }
 
 export interface HeroProps {

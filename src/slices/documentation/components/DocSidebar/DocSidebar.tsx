@@ -36,9 +36,11 @@ const DocSidebar: React.FC<DocSidebarProps> = ({
                   : "hover:bg-secondary text-foreground/80 hover:text-foreground"
               )}
             >
-              {section.icon && <span className="mr-2">
-                {renderIcon(section.icon, { size: 18 })}
-              </span>}
+              {section.icon && (
+                <span className="mr-2">
+                  {renderIcon(section.icon, { size: 18 })}
+                </span>
+              )}
               <span>{section.title}</span>
               {activeSection === section.id && (
                 <ChevronRight className="ml-auto h-4 w-4" />
