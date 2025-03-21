@@ -11,6 +11,7 @@ interface WidgetCardProps {
   index?: number;
   className?: string;
   onClick?: () => void;
+  delay?: number; // Added delay property
 }
 
 const WidgetCard: React.FC<WidgetCardProps> = ({
@@ -20,6 +21,7 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
   index = 0,
   className,
   onClick,
+  delay = 0, // Set default value to 0
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [ref, inView] = useInView({
@@ -34,7 +36,7 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ 
         duration: 0.5, 
-        delay: index * 0.1,
+        delay: delay || index * 0.1, // Use delay prop if provided, otherwise use index-based delay
         ease: [0.645, 0.045, 0.355, 1.000]
       }}
       onMouseEnter={() => setIsHovered(true)}
