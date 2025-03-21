@@ -1,14 +1,16 @@
 
 import React from 'react';
-import IntroSection from './IntroSection';
-import IntegrationSection from './IntegrationSection';
-import DashboardSection from './DashboardSection';
-import WidgetDevelopmentSection from './WidgetDevelopmentSection';
-import WidgetStoreSection from './WidgetStoreSection';
-import SecuritySection from './SecuritySection';
-import BestPracticesSection from './BestPracticesSection';
-import ApiReferenceSection from './ApiReferenceSection';
 import { DOC_CODE_SAMPLES } from '../../constants';
+import {
+  IntroSection,
+  IntegrationSection,
+  WidgetDevelopmentSection,
+  WidgetStoreSection,
+  DashboardSection,
+  SecuritySection,
+  BestPracticesSection,
+  ApiReferenceSection
+} from './index';
 
 interface SectionContentProps {
   activeSection: string;

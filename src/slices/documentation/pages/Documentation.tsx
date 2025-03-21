@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -13,6 +13,12 @@ const Documentation: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const isScrolled = useDocScroll();
   const { activeSection, handleSectionClick } = useSectionNavigation();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Set isLoaded to true after component mounts
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   // Filter sections based on search query
   const filteredSections = searchQuery
@@ -35,12 +41,14 @@ const Documentation: React.FC = () => {
             setSearchQuery={setSearchQuery} 
           />
           
-          <DocLayout 
-            filteredSections={filteredSections}
-            activeSection={activeSection}
-            handleSectionClick={handleSectionClick}
-            isScrolled={isScrolled}
-          />
+          {isLoaded && (
+            <DocLayout 
+              filteredSections={filteredSections}
+              activeSection={activeSection}
+              handleSectionClick={handleSectionClick}
+              isScrolled={isScrolled}
+            />
+          )}
         </div>
       </div>
       
