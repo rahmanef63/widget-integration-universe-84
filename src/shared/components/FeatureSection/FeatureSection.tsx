@@ -3,8 +3,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useInView } from 'react-intersection-observer';
-import { Feature } from '@/core/types';
 import AnimatedIcon from '../AnimatedIcon/AnimatedIcon';
+
+// Using a generic Feature interface that works with string icons
+interface Feature {
+  title: string;
+  description: string;
+  icon: string;
+}
 
 interface FeatureSectionProps {
   title: string;

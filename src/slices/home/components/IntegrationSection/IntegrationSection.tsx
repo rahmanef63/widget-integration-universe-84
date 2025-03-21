@@ -1,6 +1,6 @@
 
 import React from 'react';
-import FeatureSection from '@/components/FeatureSection';
+import FeatureSection from '@/shared/components/FeatureSection/FeatureSection';
 import { INTEGRATION_FEATURES } from '../../constants/features';
 
 const IntegrationSection: React.FC = () => {

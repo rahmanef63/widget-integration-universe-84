@@ -1,5 +1,5 @@
 
-import { Feature } from '@/core/types';
+import { Feature as CoreFeature } from '@/core/types';
 
 export interface WidgetSystem {
   title: string;
@@ -16,8 +16,10 @@ export interface HeroProps {
   secondaryCtaLink?: string;
 }
 
-// Re-export Feature from core to ensure type consistency
-export type { Feature };
+// Define our own Feature type that extends the core one but with string icons
+export interface Feature extends Omit<CoreFeature, 'icon'> {
+  icon: string; // Keep as string for consistency
+}
 
 export interface FeatureSectionData {
   title: string;

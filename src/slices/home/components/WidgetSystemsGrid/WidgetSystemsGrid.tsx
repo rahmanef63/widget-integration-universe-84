@@ -2,9 +2,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import WidgetCard from '@/components/WidgetCard';
-import AnimatedIcon from '@/components/AnimatedIcon';
+import AnimatedIcon from '@/shared/components/AnimatedIcon/AnimatedIcon';
 import { WIDGET_SYSTEMS } from '../../constants/features';
-import { renderIcon } from '@/shared/icon-picker/utils';
 
 const WidgetSystemsGrid: React.FC = () => {
   return (
@@ -37,7 +36,7 @@ const WidgetSystemsGrid: React.FC = () => {
               key={index}
               title={system.title}
               description={system.description}
-              icon={<AnimatedIcon icon={system.icon} />}
+              icon={system.icon}
               index={index}
             />
           ))}
