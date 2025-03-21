@@ -158,6 +158,7 @@ import {
 
 import React from "react";
 import { IconOption } from "../types";
+import { IconCategory, CategorizedIconOptions, iconCategoryMap } from "../constants/icon-categories";
 
 // Define all available icons
 export const iconOptions: IconOption[] = [
@@ -315,6 +316,20 @@ export const iconOptions: IconOption[] = [
   { name: "SlidersHorizontal", icon: SlidersHorizontal },
 ];
 
+// Organize icons by category
+export const categorizedIconOptions: CategorizedIconOptions[] = Object.entries(iconCategoryMap).map(
+  ([category, iconNames]) => {
+    const icons = iconNames
+      .map(name => iconOptions.find(option => option.name === name))
+      .filter(Boolean) as IconOption[];
+    
+    return {
+      category: category as IconCategory,
+      icons
+    };
+  }
+);
+
 // Utility function to get an icon by name
 export const getIconByName = (name: string): LucideIcon | undefined => {
   const option = iconOptions.find((option) => option.name === name);
@@ -327,4 +342,10 @@ export const renderIcon = (name: string | undefined, props?: LucideProps): React
   const icon = getIconByName(name);
   if (!icon) return null;
   return React.createElement(icon, { className: "h-4 w-4", ...props });
+};
+
+// Get icons by a specific category
+export const getIconsByCategory = (category: IconCategory): IconOption[] => {
+  const categoryData = categorizedIconOptions.find(c => c.category === category);
+  return categoryData?.icons || [];
 };

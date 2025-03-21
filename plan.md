@@ -23,6 +23,7 @@ src/
 │   ├── components/      # Shared UI components
 │   ├── services/        # Shared business logic
 │   └── store/           # Global state management
+│   └── icon-picker/     # Centralized icon management 
 └── slices/              # Feature modules
     ├── home/            # Home page feature
     │   ├── components/  # Home-specific components
@@ -55,7 +56,7 @@ src/
 - **API Services**: Prepared for future backend integration
 - **Slices Architecture**: Fully implemented across all features
 - **Constants Files**: DRY approach with centralized constants for each slice
-- **Icon Handling**: Consistent implementation using string-based icon identifiers with the renderIcon utility
+- **Icon Handling**: Consistent implementation using string-based icon identifiers with the renderIcon utility and categorized icons
 - **Type Consistency**: Consistent type definitions across slices with proper inheritance
 
 ## 3. Data Management
@@ -121,6 +122,7 @@ Dashboard {
 - [x] Consistent icon implementation across components
 - [x] Proper type handling for all components
 - [x] Documentation content organization with auto-scrolling
+- [x] Icon system refactoring with categorization
 - [ ] Implement Dashboard layout system
 - [ ] Backend API integration
 - [ ] Database integration
@@ -151,6 +153,7 @@ Our current focus is completing the feature sections:
 - Ensure proper type definitions across all components
 - Use proper custom hooks for shared logic
 - Maintain consistent styling with reusable CSS variables
+- Centralize icon management with categorized icon systems
 
 ## 7. Preview & Development
 
@@ -177,6 +180,9 @@ The development server will start at http://localhost:8080
 - Custom hooks for shared logic
 - Context API for global state management
 - DRY code with constants files for each slice
-- Consistent icon handling across components
+- Consistent icon handling across components with categorization
 - Proper type inheritance and interface design
 - Documentation organization with consistent section structure
+- Centralized icon management with categorized icons for better organization and discoverability
+
+```

@@ -162,11 +162,38 @@ import {
 } from "lucide-react";
 import { type LucideIcon, type LucideProps } from "lucide-react";
 import React from "react";
+import { IconCategory } from "@/shared/icon-picker/constants/icon-categories";
 
 export interface IconOption {
   name: string;
   icon: LucideIcon;
 }
+
+// Import the category constants to ensure consistency
+export { IconCategory } from "@/shared/icon-picker/constants/icon-categories";
+
+// Define icon categories for better organization
+export const iconCategories = [
+  { id: IconCategory.NAVIGATION, label: "Navigation & UI" },
+  { id: IconCategory.STARTUP, label: "Startup & Business" },
+  { id: IconCategory.TECHNOLOGY, label: "Technology & Development" },
+  { id: IconCategory.ACTIONS, label: "Actions" },
+  { id: IconCategory.USERS, label: "Users & Organizations" },
+  { id: IconCategory.CONTENT, label: "Content & Media" },
+  { id: IconCategory.LAYOUT, label: "Layout & Views" },
+  { id: IconCategory.DEVELOPMENT, label: "Development" },
+  { id: IconCategory.DEVICES, label: "Devices & Hardware" },
+  { id: IconCategory.DATA, label: "Analytics & Data" },
+  { id: IconCategory.FINANCE, label: "Finance" },
+  { id: IconCategory.COMMUNICATION, label: "Communication" },
+  { id: IconCategory.TIME, label: "Time & Calendar" },
+  { id: IconCategory.STATUS, label: "Status & Notifications" },
+  { id: IconCategory.SECURITY, label: "Security" },
+  { id: IconCategory.POWER, label: "Power & Energy" },
+  { id: IconCategory.COMMERCE, label: "Shopping & Commerce" },
+  { id: IconCategory.GENERAL, label: "General" },
+  { id: IconCategory.DASHBOARD, label: "Dashboard" },
+];
 
 export const iconOptions: IconOption[] = [
   // Navigation & UI
@@ -391,4 +418,16 @@ export const renderIcon = (
   }
 
   return React.createElement(icon, props);
+};
+
+// Get icons by category
+export const getIconsByCategory = (category: IconCategory): IconOption[] => {
+  return iconOptions.filter((icon) => {
+    // Map icon to the appropriate category based on its name
+    // This uses the same categorization logic as in the shared icon picker
+    const matchingCategory = Object.entries(IconCategory).find(([_, categoryName]) => 
+      category === categoryName
+    );
+    return matchingCategory !== undefined;
+  });
 };
