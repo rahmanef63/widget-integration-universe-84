@@ -28,13 +28,11 @@ const App = () => (
             <AnimatePresence mode="wait">
               <Routes>
                 <Route path={ROUTES.HOME} element={<Home />} />
-                <Route path="/index" element={<Navigate to={ROUTES.HOME} replace />} />
-                <Route path="index" element={<Navigate to={ROUTES.HOME} replace />} />
                 <Route path={ROUTES.DOCUMENTATION} element={<Documentation />} />
                 <Route path={ROUTES.ECOSYSTEM} element={<Ecosystem />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
-                <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
+                <Route path="*" element={<Navigate to={ROUTES.NOT_FOUND} replace />} />
               </Routes>
             </AnimatePresence>
           </React.Suspense>
