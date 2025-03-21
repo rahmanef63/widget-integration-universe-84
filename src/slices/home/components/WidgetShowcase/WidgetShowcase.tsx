@@ -77,16 +77,19 @@ const WidgetShowcase: React.FC<WidgetShowcaseProps> = ({
           animate={inView ? "visible" : "hidden"}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {widgets.map((widget, index) => (
-            <motion.div key={widget.id} variants={itemVariants}>
-              <WidgetCard
-                title={widget.title}
-                description={widget.description}
-                icon={widget.icon}
-                delay={index * 100}
-              />
-            </motion.div>
-          ))}
+          {widgets.map((widget, index) => {
+            const Icon = widget.icon;
+            return (
+              <motion.div key={widget.id} variants={itemVariants}>
+                <WidgetCard
+                  title={widget.title}
+                  description={widget.description}
+                  icon={<Icon size={24} />}
+                  delay={index * 100}
+                />
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
