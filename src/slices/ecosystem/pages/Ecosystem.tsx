@@ -7,16 +7,19 @@ import WidgetSearch from '../components/WidgetSearch/WidgetSearch';
 import WidgetTabs from '../components/WidgetTabs/WidgetTabs';
 import { mockWidgets, categories } from '../data/widgets';
 import { Widget } from '../types';
+import { useToast } from '@/hooks/use-toast';
 
 const Ecosystem: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [widgets, setWidgets] = useState<Widget[]>(mockWidgets);
   const [filteredWidgets, setFilteredWidgets] = useState<Widget[]>(mockWidgets);
+  const { toast } = useToast();
 
   // Filter widgets based on search term and category
   useEffect(() => {
-    const filtered = mockWidgets.filter(widget => {
+    const filtered = widgets.filter(widget => {
       const matchesSearch = widget.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           widget.description.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = selectedCategory === 'All Categories' || widget.category === selectedCategory;
@@ -25,7 +28,19 @@ const Ecosystem: React.FC = () => {
     });
     
     setFilteredWidgets(filtered);
-  }, [searchTerm, selectedCategory]);
+  }, [searchTerm, selectedCategory, widgets]);
+
+  // Handle widget update
+  const handleWidgetUpdate = (updatedWidget: Widget) => {
+    const updatedWidgets = widgets.map(widget => 
+      widget.id === updatedWidget.id ? updatedWidget : widget
+    );
+    setWidgets(updatedWidgets);
+    toast({
+      title: "Widget updated",
+      description: `${updatedWidget.title} has been successfully updated.`,
+    });
+  };
 
   return (
     <>
@@ -46,7 +61,8 @@ const Ecosystem: React.FC = () => {
           
           <WidgetTabs 
             filteredWidgets={filteredWidgets} 
-            viewMode={viewMode} 
+            viewMode={viewMode}
+            onWidgetUpdate={handleWidgetUpdate}
           />
         </section>
       </main>

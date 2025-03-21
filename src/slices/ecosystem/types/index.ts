@@ -7,10 +7,18 @@ export interface Widget {
   category: string;
   author: string;
   version: string;
+  configuration?: Record<string, any>;
 }
 
 export interface FilterOptions {
   searchTerm: string;
   category: string;
   viewMode: 'grid' | 'list';
+}
+
+export interface WidgetEditorProps {
+  widget: Widget;
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (updatedWidget: Widget) => void;
 }

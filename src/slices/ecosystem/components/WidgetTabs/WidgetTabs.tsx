@@ -7,38 +7,62 @@ import { Widget } from '../../types';
 interface WidgetTabsProps {
   filteredWidgets: Widget[];
   viewMode: 'grid' | 'list';
+  onWidgetUpdate?: (updatedWidget: Widget) => void;
 }
 
-const WidgetTabs: React.FC<WidgetTabsProps> = ({ filteredWidgets, viewMode }) => {
+const WidgetTabs: React.FC<WidgetTabsProps> = ({ 
+  filteredWidgets, 
+  viewMode,
+  onWidgetUpdate 
+}) => {
+  // Group widgets by some criteria (e.g., Featured, Popular, New)
+  const featuredWidgets = filteredWidgets.slice(0, 6);
+  const popularWidgets = [...filteredWidgets]
+    .sort((a, b) => b.id.localeCompare(a.id))
+    .slice(0, 6);
+  const newWidgets = [...filteredWidgets]
+    .sort((a, b) => b.version.localeCompare(a.version))
+    .slice(0, 6);
+
   return (
-    <Tabs defaultValue="featured" className="mb-8">
+    <Tabs defaultValue="all" className="mt-8">
       <TabsList className="mb-6">
+        <TabsTrigger value="all">All Widgets</TabsTrigger>
         <TabsTrigger value="featured">Featured</TabsTrigger>
-        <TabsTrigger value="newest">Newest</TabsTrigger>
         <TabsTrigger value="popular">Popular</TabsTrigger>
-        <TabsTrigger value="enterprise">Enterprise</TabsTrigger>
+        <TabsTrigger value="new">New</TabsTrigger>
       </TabsList>
       
-      <TabsContent value="featured" className="mt-0">
-        <WidgetGrid widgets={filteredWidgets} viewMode={viewMode} />
+      <TabsContent value="all">
+        <WidgetGrid 
+          widgets={filteredWidgets} 
+          viewMode={viewMode} 
+          onWidgetUpdate={onWidgetUpdate}
+        />
       </TabsContent>
       
-      <TabsContent value="newest" className="mt-0">
-        <div className="text-center py-10">
-          <p className="text-muted-foreground">Newest widgets will be displayed here.</p>
-        </div>
+      <TabsContent value="featured">
+        <WidgetGrid 
+          widgets={featuredWidgets} 
+          viewMode={viewMode} 
+          onWidgetUpdate={onWidgetUpdate}
+        />
       </TabsContent>
       
-      <TabsContent value="popular" className="mt-0">
-        <div className="text-center py-10">
-          <p className="text-muted-foreground">Popular widgets will be displayed here.</p>
-        </div>
+      <TabsContent value="popular">
+        <WidgetGrid 
+          widgets={popularWidgets} 
+          viewMode={viewMode} 
+          onWidgetUpdate={onWidgetUpdate}
+        />
       </TabsContent>
       
-      <TabsContent value="enterprise" className="mt-0">
-        <div className="text-center py-10">
-          <p className="text-muted-foreground">Enterprise widgets will be displayed here.</p>
-        </div>
+      <TabsContent value="new">
+        <WidgetGrid 
+          widgets={newWidgets} 
+          viewMode={viewMode} 
+          onWidgetUpdate={onWidgetUpdate}
+        />
       </TabsContent>
     </Tabs>
   );
