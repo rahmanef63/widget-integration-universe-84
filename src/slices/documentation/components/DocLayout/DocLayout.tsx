@@ -23,10 +23,10 @@ const DocLayout: React.FC<DocLayoutProps> = ({
     threshold: 0.1,
   });
 
-  // Log when the layout is mounted
+  // Log when the layout is mounted and when the active section changes
   useEffect(() => {
-    console.log('DocLayout mounted, activeSection:', activeSection);
-  }, []);
+    console.log('DocLayout mounted or updated, activeSection:', activeSection);
+  }, [activeSection]);
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 w-full">
@@ -38,8 +38,8 @@ const DocLayout: React.FC<DocLayoutProps> = ({
       />
       
       {/* Main Content */}
-      <main className="flex-1 w-full overflow-hidden min-h-[80vh]" ref={ref}>
-        <div className="max-w-3xl mx-auto">
+      <main className="flex-1 w-full overflow-visible min-h-[80vh]" ref={ref}>
+        <div className="max-w-3xl mx-auto px-4">
           <SectionContent activeSection={activeSection} inView={inView} />
         </div>
       </main>

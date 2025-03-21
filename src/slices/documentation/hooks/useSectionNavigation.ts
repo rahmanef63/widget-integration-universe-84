@@ -1,19 +1,12 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export const useSectionNavigation = () => {
   const [activeSection, setActiveSection] = useState<string>('intro');
 
-  // Auto-scroll to the active section when it changes
-  useEffect(() => {
-    const sectionElement = document.getElementById(activeSection.split('-')[0]);
-    if (sectionElement) {
-      sectionElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [activeSection]);
-
   // Handle section click - update active section and scroll to it
-  const handleSectionClick = (sectionId: string) => {
+  const handleSectionClick = useCallback((sectionId: string) => {
+    console.log('Navigating to section:', sectionId);
     setActiveSection(sectionId);
     
     // Determine if it's a main section or subsection
@@ -21,14 +14,18 @@ export const useSectionNavigation = () => {
     
     // Target element to scroll to
     const targetId = subSection ? `${mainSection}-${subSection}` : mainSection;
-    const element = document.getElementById(targetId);
     
-    if (element) {
-      setTimeout(() => {
+    // Use requestAnimationFrame to ensure the section has been rendered
+    requestAnimationFrame(() => {
+      const element = document.getElementById(targetId);
+      if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    }
-  };
+        console.log('Scrolled to element:', targetId);
+      } else {
+        console.log('Element not found:', targetId);
+      }
+    });
+  }, []);
 
   // Monitor scroll position to update active section
   useEffect(() => {
@@ -37,15 +34,33 @@ export const useSectionNavigation = () => {
       const sections = document.querySelectorAll('section[id]');
       
       // If no sections found, do nothing
-      if (sections.length === 0) return;
+      if (sections.length === 0) {
+        console.log('No sections found');
+        return;
+      }
       
       // Find the section currently in view
+      let foundSection = false;
       for (const section of sections) {
         const rect = section.getBoundingClientRect();
         // If the top of the element is near the top of the viewport
         if (rect.top <= 200 && rect.bottom > 200) {
-          setActiveSection(section.id);
+          const sectionId = section.id;
+          console.log('Section in view:', sectionId);
+          setActiveSection(sectionId);
+          foundSection = true;
           break;
+        }
+      }
+      
+      // If no section is in view, default to the first visible section
+      if (!foundSection && sections.length > 0) {
+        for (const section of sections) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top > 0) {
+            setActiveSection(section.id);
+            break;
+          }
         }
       }
     };
@@ -58,6 +73,10 @@ export const useSectionNavigation = () => {
     };
 
     window.addEventListener('scroll', debouncedHandleScroll);
+    
+    // Initial check for active section
+    setTimeout(handleScroll, 300);
+    
     return () => {
       window.removeEventListener('scroll', debouncedHandleScroll);
       clearTimeout(scrollTimeout);
