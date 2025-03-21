@@ -1,6 +1,15 @@
 
-import { Code, GitBranch, Package, Shield, Database, Settings, Layers, Server } from 'lucide-react';
 import { ReactNode } from 'react';
+import { 
+  Code, 
+  GitBranch, 
+  Package, 
+  Shield, 
+  Database, 
+  Settings, 
+  Layers, 
+  Server 
+} from 'lucide-react';
 import { DocSection } from '../types';
 
 // Documentation sections data
