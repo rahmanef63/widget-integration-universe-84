@@ -26,11 +26,23 @@ src/
 └── slices/              # Feature modules
     ├── home/            # Home page feature
     │   ├── components/  # Home-specific components
+    │   ├── constants/   # Home-specific constants
     │   ├── pages/       # Home pages
     │   └── types/       # Home-specific types
     ├── documentation/   # Documentation feature
+    │   ├── components/  # Documentation-specific components
+    │   ├── constants/   # Documentation-specific constants
+    │   ├── pages/       # Documentation pages
+    │   └── types/       # Documentation-specific types
     ├── ecosystem/       # Ecosystem feature
+    │   ├── components/  # Ecosystem-specific components
+    │   ├── constants/   # Ecosystem-specific constants
+    │   ├── data/        # Data for the ecosystem
+    │   ├── pages/       # Ecosystem pages
+    │   └── types/       # Ecosystem-specific types
     └── error/           # Error handling feature
+        ├── pages/       # Error pages
+        └── types/       # Error-specific types
 ```
 
 ## 2. Current Implementation
@@ -42,6 +54,7 @@ src/
 - **UI Components**: Leveraging shadcn/ui for consistent design language
 - **API Services**: Prepared for future backend integration
 - **Slices Architecture**: Fully implemented across all features
+- **Constants Files**: DRY approach with centralized constants for each slice
 
 ## 3. Data Management
 
@@ -101,6 +114,8 @@ Dashboard {
 - [x] Refactor Ecosystem page to use component-based architecture
 - [x] Refactor Documentation section into smaller components
 - [x] Create Widget Editor/Configurator component
+- [x] Extract constants to dedicated files for DRY code
+- [x] Fix routing issues between Home and root paths
 - [ ] Implement Dashboard layout system
 - [ ] Backend API integration
 - [ ] Database integration
@@ -126,6 +141,7 @@ Our current focus is completing the feature sections:
 - Write tests for critical functionality
 - Use Tailwind CSS for styling
 - Implement responsive designs for all views
+- Extract constants to dedicated files for better maintainability
 
 ## 7. Preview & Development
 
@@ -151,3 +167,6 @@ The development server will start at http://localhost:8080
 - Error handling with fallbacks
 - Custom hooks for shared logic
 - Context API for global state management
+- DRY code with constants files for each slice
+
+```

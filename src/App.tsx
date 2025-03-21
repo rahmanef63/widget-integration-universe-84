@@ -27,7 +27,6 @@ const App = () => (
           <React.Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
             <AnimatePresence mode="wait">
               <Routes>
-                <Route path="/" element={<Navigate to={ROUTES.HOME} replace />} />
                 <Route path={ROUTES.HOME} element={<Home />} />
                 <Route path={ROUTES.DOCUMENTATION} element={<Documentation />} />
                 <Route path={ROUTES.ECOSYSTEM} element={<Ecosystem />} />
