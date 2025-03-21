@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import DocSidebar from '../DocSidebar/DocSidebar';
 import SectionContent from '../DocContent/SectionContent';
@@ -33,8 +33,10 @@ const DocLayout: React.FC<DocLayoutProps> = ({
       />
       
       {/* Main Content */}
-      <main className="flex-1 w-full overflow-hidden" ref={ref}>
-        <SectionContent activeSection={activeSection} inView={inView} />
+      <main className="flex-1 w-full overflow-hidden min-h-[80vh]" ref={ref}>
+        <div className="max-w-3xl mx-auto">
+          <SectionContent activeSection={activeSection} inView={inView} />
+        </div>
       </main>
     </div>
   );
