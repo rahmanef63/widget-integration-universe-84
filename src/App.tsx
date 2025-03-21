@@ -14,6 +14,7 @@ const Home = React.lazy(() => import("@/slices/home/pages/Home"));
 const Documentation = React.lazy(() => import("@/slices/documentation/pages/Documentation"));
 const Ecosystem = React.lazy(() => import("@/slices/ecosystem/pages/Ecosystem"));
 const NotFound = React.lazy(() => import("@/slices/error/pages/NotFound"));
+const IndexPage = React.lazy(() => import("@/pages/home/Index"));
 
 const queryClient = new QueryClient();
 
@@ -28,7 +29,7 @@ const App = () => (
             <AnimatePresence mode="wait">
               <Routes>
                 <Route path={ROUTES.HOME} element={<Home />} />
-                <Route path="/index" element={<Navigate to={ROUTES.HOME} replace />} />
+                <Route path="/index" element={<IndexPage />} />
                 <Route path={ROUTES.DOCUMENTATION} element={<Documentation />} />
                 <Route path={ROUTES.ECOSYSTEM} element={<Ecosystem />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
