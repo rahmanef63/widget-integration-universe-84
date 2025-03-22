@@ -9,7 +9,7 @@ const SupportLayout: React.FC<SupportLayoutProps> = ({ children }) => {
     <DashboardLayout>
       <DashboardHeader
         title="Support"
-        subtitle="Get help and support for your dashboard"
+        subtitle="Get help with the platform and connect with our team"
       />
       {children}
     </DashboardLayout>

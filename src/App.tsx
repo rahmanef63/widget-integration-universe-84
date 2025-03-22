@@ -16,6 +16,13 @@ const Ecosystem = React.lazy(() => import("@/slices/ecosystem/pages/Ecosystem"))
 const NotFound = React.lazy(() => import("@/slices/error/pages/NotFound"));
 const Dashboard = React.lazy(() => import("@/slices/dashboard/pages/Dashboard"));
 const DevTools = React.lazy(() => import("@/slices/devtools/pages/DevTools"));
+const Analytics = React.lazy(() => import("@/slices/analytics/pages/Analytics"));
+const MyWidgets = React.lazy(() => import("@/slices/widgets/pages/MyWidgets"));
+const WidgetStore = React.lazy(() => import("@/slices/store/pages/WidgetStore"));
+const Integrations = React.lazy(() => import("@/slices/integrations/pages/Integrations"));
+const Profile = React.lazy(() => import("@/slices/profile/pages/Profile"));
+const Preferences = React.lazy(() => import("@/slices/preferences/pages/Preferences"));
+const Support = React.lazy(() => import("@/slices/support/pages/Support"));
 
 const queryClient = new QueryClient();
 
@@ -33,6 +40,13 @@ const App = () => (
                 <Route path={ROUTES.DOCUMENTATION} element={<Documentation />} />
                 <Route path={ROUTES.ECOSYSTEM} element={<Ecosystem />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard/analytics" element={<Analytics />} />
+                <Route path="/dashboard/widgets" element={<MyWidgets />} />
+                <Route path="/dashboard/store" element={<WidgetStore />} />
+                <Route path="/dashboard/integrations" element={<Integrations />} />
+                <Route path="/dashboard/profile" element={<Profile />} />
+                <Route path="/dashboard/preferences" element={<Preferences />} />
+                <Route path="/dashboard/support" element={<Support />} />
                 <Route path="/dashboard/devtools" element={<DevTools />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
