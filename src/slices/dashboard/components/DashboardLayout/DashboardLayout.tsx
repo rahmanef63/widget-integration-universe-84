@@ -7,7 +7,6 @@ import { DASHBOARD_SIDEBAR_SECTIONS } from '../../constants/sidebar-items';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { UserCircle } from 'lucide-react';
-import DashboardHeader from '../DashboardHeader/DashboardHeader';
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const location = useLocation();
@@ -35,7 +34,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <div className="container mx-auto">
             <div className="flex items-center mb-4">
               <SidebarTrigger className="mr-4" />
-              <DashboardHeader title="Dashboard" />
+              <h1 className="text-2xl font-bold">Dashboard</h1>
             </div>
             {children}
           </div>
