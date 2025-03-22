@@ -62,7 +62,7 @@ const LogsPanel: React.FC = () => {
                 variant={levelFilter === level ? 'default' : 'outline'}
                 className={cn(
                   'cursor-pointer',
-                  levelFilter === level && level !== 'all' && getLevelBadge(level as Exclude<typeof level, 'all'>').color
+                  levelFilter === level && level !== 'all' && getLevelBadge(level as Exclude<typeof level, 'all'>).color
                 )}
                 onClick={() => setLevelFilter(level)}
               >
