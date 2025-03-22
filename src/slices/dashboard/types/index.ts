@@ -27,10 +27,12 @@ export interface DashboardLayoutProps {
 
 export interface DashboardContentProps {
   children: ReactNode;
+  className?: string;
 }
 
 export interface DashboardHeaderProps {
   title: string;
   subtitle?: string;
   actions?: ReactNode;
+  className?: string;
 }

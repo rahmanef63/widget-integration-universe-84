@@ -2,11 +2,13 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DashboardLayoutProps } from '../../types';
-import DashboardSidebar from '../DashboardSidebar/DashboardSidebar';
+import { DashboardSidebar } from '../';
 import { DASHBOARD_SIDEBAR_SECTIONS } from '../../constants/sidebar-items';
-import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { UserCircle } from 'lucide-react';
+import { DashboardContent } from '../';
+import { DashboardHeader } from '../';
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const location = useLocation();
@@ -30,14 +32,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           </Button>
         </DashboardSidebar>
         
-        <SidebarInset className="px-4 py-6">
-          <div className="container mx-auto">
-            <div className="flex items-center mb-4">
-              <SidebarTrigger className="mr-4" />
-              <h1 className="text-2xl font-bold">Dashboard</h1>
-            </div>
+        <SidebarInset className="p-0">
+          <DashboardContent className="p-6">
+            <DashboardHeader 
+              title="Dashboard" 
+              subtitle="Welcome to your dashboard"
+            />
             {children}
-          </div>
+          </DashboardContent>
         </SidebarInset>
       </div>
     </SidebarProvider>
