@@ -4,15 +4,17 @@ import { useLocation } from 'react-router-dom';
 import { DashboardLayoutProps } from '../../types';
 import { DashboardSidebar } from '../';
 import { DASHBOARD_SIDEBAR_SECTIONS } from '../../constants/sidebar-items';
-import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { UserCircle } from 'lucide-react';
 import { DashboardContent } from '../';
 import { DashboardHeader } from '../';
+import { useDashboardTitle } from '../../hooks/useDashboardTitle';
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const location = useLocation();
   const [activePath, setActivePath] = useState(location.pathname);
+  const { title, subtitle } = useDashboardTitle(activePath, DASHBOARD_SIDEBAR_SECTIONS);
 
   const handleNavigation = (path: string) => {
     setActivePath(path);
@@ -35,8 +37,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <SidebarInset className="p-0">
           <DashboardContent className="p-6">
             <DashboardHeader 
-              title="Dashboard" 
-              subtitle="Welcome to your dashboard"
+              title={title} 
+              subtitle={subtitle}
             />
             {children}
           </DashboardContent>

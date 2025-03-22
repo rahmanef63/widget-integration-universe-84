@@ -11,7 +11,7 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         path: '/dashboard',
       },
       {
-        icon: 'Activity',
+        icon: 'BarChart',
         label: 'Analytics',
         path: '/dashboard/analytics',
         badge: 'New',
@@ -22,7 +22,7 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
     title: 'Widget Management',
     items: [
       {
-        icon: 'Package',
+        icon: 'Layers',
         label: 'My Widgets',
         path: '/dashboard/widgets',
       },
@@ -32,7 +32,7 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         path: '/dashboard/store',
       },
       {
-        icon: 'Layers',
+        icon: 'PuzzlePiece',
         label: 'Integrations',
         path: '/dashboard/integrations',
         badge: 3,
@@ -56,17 +56,6 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         icon: 'HelpCircle',
         label: 'Support',
         path: '/dashboard/support',
-      },
-    ],
-  },
-  {
-    title: 'Development',
-    items: [
-      {
-        icon: 'Wrench',
-        label: 'DevTools',
-        path: '/dashboard/devtools',
-        badge: 'Dev',
       },
     ],
   },

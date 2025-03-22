@@ -16,6 +16,7 @@ import {
   SidebarMenuBadge,
   SidebarMenuItem,
   SidebarMenuButton,
+  useSidebar,
 } from '@/components/ui/sidebar';
 
 const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
@@ -24,6 +25,9 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   onNavigate,
   children,
 }) => {
+  const { state } = useSidebar();
+  const isCollapsed = state === 'collapsed';
+  
   const handleNavigation = (path: string) => {
     if (onNavigate) {
       onNavigate(path);
@@ -33,7 +37,12 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   return (
     <Sidebar>
       <SidebarHeader className="flex items-center justify-center py-4">
-        <h1 className="text-xl font-bold">Widget Universe</h1>
+        <h1 className={cn(
+          "transition-all duration-200 font-bold",
+          isCollapsed ? "text-md" : "text-xl"
+        )}>
+          {isCollapsed ? "WU" : "Widget Universe"}
+        </h1>
       </SidebarHeader>
       
       <SidebarContent>
@@ -52,10 +61,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                       <Link 
                         to={item.path} 
                         onClick={() => handleNavigation(item.path)}
-                        className={cn(
-                          "flex items-center space-x-2",
-                          activePath === item.path && "font-medium"
-                        )}
+                        className="flex items-center gap-2"
                       >
                         {renderIcon(item.icon, { size: 20 })}
                         <span>{item.label}</span>
