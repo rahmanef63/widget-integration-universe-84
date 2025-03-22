@@ -34,7 +34,7 @@ const DevtoolsPanel: React.FC<DevtoolsPanelProps> = ({ className }) => {
     right: 'fixed right-0 top-0 bottom-0 w-[30rem] border-l',
   };
   
-  // Set up monitoring tools
+  // Set up monitoring tools - ALWAYS run this effect regardless of config state
   useEffect(() => {
     if (config.enabled) {
       // Initialize network interceptor
@@ -87,7 +87,8 @@ const DevtoolsPanel: React.FC<DevtoolsPanelProps> = ({ className }) => {
     );
   }
   
-  // Set active tab if current tab is not in enabled tabs
+  // Set active tab outside of render to prevent hooks inconsistency errors
+  // Move this to a separate useEffect that always runs
   useEffect(() => {
     if (!config.tabs.includes(activeTab) && config.tabs.length > 0) {
       setActiveTab(config.tabs[0]);

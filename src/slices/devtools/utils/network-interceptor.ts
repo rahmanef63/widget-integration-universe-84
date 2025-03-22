@@ -38,7 +38,15 @@ export class NetworkInterceptor {
     input: RequestInfo | URL, 
     init?: RequestInit
   ): Promise<Response> {
-    const url = typeof input === 'string' ? input : input.url;
+    // Get the URL string regardless of input type
+    const url = typeof input === 'string' 
+      ? input 
+      : input instanceof URL 
+        ? input.toString() 
+        : input instanceof Request 
+          ? input.url 
+          : String(input);
+          
     const method = init?.method || 'GET';
     const requestId = `${method}-${url}-${Date.now()}`;
     const startTime = Date.now();
