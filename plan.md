@@ -46,6 +46,13 @@ src/
     │   ├── data/        # Data for the ecosystem
     │   ├── pages/       # Ecosystem pages
     │   └── types/       # Ecosystem-specific types
+    ├── devtools/        # Developer Tools feature
+    │   ├── components/  # DevTools-specific components
+    │   ├── contexts/    # DevTools contexts
+    │   ├── services/    # DevTools services
+    │   ├── types/       # DevTools types
+    │   ├── utils/       # DevTools utilities
+    │   └── pages/       # DevTools pages
     └── error/           # Error handling feature
         ├── pages/       # Error pages
         └── types/       # Error-specific types
@@ -64,6 +71,7 @@ src/
 - **Icon Handling**: Consistent implementation using string-based icon identifiers with the renderIcon utility and categorized icons
 - **Type Consistency**: Consistent type definitions across slices with proper inheritance
 - **Dashboard Integration**: Implemented dashboard layout and sidebar using shadcn/ui components
+- **DevTools**: Implemented developer tools with localStorage for persistence (designed for future API integration)
 
 ## 3. Data Management
 
@@ -107,6 +115,15 @@ Dashboard {
   createdAt: Date
   updatedAt: Date
 }
+
+DevToolsData {
+  id: string
+  userId: string
+  type: string (logs, network, performance, state)
+  data: Object
+  timestamp: Date
+  metadata: Object
+}
 ```
 
 ## 4. Implementation Roadmap
@@ -130,6 +147,7 @@ Dashboard {
 - [x] Documentation content organization with auto-scrolling
 - [x] Icon system refactoring with categorization
 - [x] Implement Dashboard layout system with shadcn/ui
+- [x] Implement DevTools with localStorage persistence
 - [ ] Backend API integration
 - [ ] Database integration
 - [ ] User authentication
@@ -144,6 +162,7 @@ Our current focus is completing the feature sections:
 2. Creating a Widget Manager for better organization and discovery
 3. Setting up widget data persistence and state management
 4. Implementing cross-widget communication via an event bus
+5. Building developer tools for debugging and monitoring
 
 ## 6. Development Guidelines
 
@@ -161,6 +180,8 @@ Our current focus is completing the feature sections:
 - Maintain consistent styling with reusable CSS variables
 - Centralize icon management with categorized icon systems
 - Use shadcn/ui components for consistent UI design
+- Design services to work with both localStorage and future API integration
+- Implement interfaces that abstract storage mechanisms for easy migration to actual backends
 
 ## 7. Preview & Development
 
@@ -193,4 +214,33 @@ The development server will start at http://localhost:8080
 - Centralized icon management with categorized icons for better organization and discoverability
 - Dashboard layout with shadcn/ui sidebar components
 - Vertical slice architecture with proper separation of concerns
-```
+- Service interfaces that abstract storage implementation details
+- DevTools designed for easy migration from localStorage to backend APIs
+
+## 9. Future Backend Integration
+
+The current implementation uses localStorage for data persistence, but is designed to be easily migrated to a proper backend:
+
+1. **Abstraction Layer**: We've implemented service classes that abstract the storage mechanism, making it easy to swap localStorage for API calls.
+
+2. **Type Definitions**: All data models have proper TypeScript interfaces that reflect the expected database schema.
+
+3. **Migration Path**: To migrate to a real backend:
+   - Replace StorageService methods with API calls
+   - Implement authentication and authorization
+   - Add proper error handling for network issues
+   - Implement real-time updates with WebSockets where needed
+
+4. **Authentication & RBAC**: The application is prepared for:
+   - User authentication with JWT or similar token-based auth
+   - Role-based access control with permission checking
+   - User-specific data isolation
+
+5. **API Service Structure**: We have placeholder API service files that will be expanded to include:
+   - RESTful API endpoints
+   - GraphQL integration (optional)
+   - Proper error handling
+   - Request/response interceptors
+   - Caching strategies
+
+Our current localStorage-based implementation serves as a functional prototype while collecting requirements for the final backend implementation.

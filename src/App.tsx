@@ -14,6 +14,8 @@ const Home = React.lazy(() => import("@/slices/home/pages/Home"));
 const Documentation = React.lazy(() => import("@/slices/documentation/pages/Documentation"));
 const Ecosystem = React.lazy(() => import("@/slices/ecosystem/pages/Ecosystem"));
 const NotFound = React.lazy(() => import("@/slices/error/pages/NotFound"));
+const Dashboard = React.lazy(() => import("@/slices/dashboard/pages/Dashboard"));
+const DevTools = React.lazy(() => import("@/slices/devtools/pages/DevTools"));
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,8 @@ const App = () => (
                 <Route path={ROUTES.HOME} element={<Home />} />
                 <Route path={ROUTES.DOCUMENTATION} element={<Documentation />} />
                 <Route path={ROUTES.ECOSYSTEM} element={<Ecosystem />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard/devtools" element={<DevTools />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
                 <Route path="*" element={<Navigate to={ROUTES.NOT_FOUND} replace />} />

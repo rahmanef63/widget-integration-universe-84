@@ -59,4 +59,15 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
       },
     ],
   },
+  {
+    title: 'Development',
+    items: [
+      {
+        icon: 'Wrench',
+        label: 'DevTools',
+        path: '/dashboard/devtools',
+        badge: 'Dev',
+      },
+    ],
+  },
 ];
