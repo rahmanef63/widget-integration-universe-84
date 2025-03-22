@@ -1,17 +1,22 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { DashboardLayoutProps } from '../../types';
 import { DashboardSidebar } from '../';
 import { DASHBOARD_SIDEBAR_SECTIONS } from '../../constants/sidebar-items';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { UserCircle } from 'lucide-react';
-import { DashboardContent, DashboardHeader } from '../';
-import { useDashboardNavigation } from '../../hooks/useDashboardNavigation';
+import { DashboardContent } from '../';
+import { DashboardHeader } from '../';
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
-  const { activePath, handleNavigation, getCurrentSectionTitle } = useDashboardNavigation();
-  const { section, item } = getCurrentSectionTitle();
+  const location = useLocation();
+  const [activePath, setActivePath] = useState(location.pathname);
+
+  const handleNavigation = (path: string) => {
+    setActivePath(path);
+  };
 
   return (
     <SidebarProvider defaultOpen={true}>
@@ -30,8 +35,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <SidebarInset className="p-0">
           <DashboardContent className="p-6">
             <DashboardHeader 
-              title={item} 
-              subtitle={`${section} > ${item}`}
+              title="Dashboard" 
+              subtitle="Welcome to your dashboard"
             />
             {children}
           </DashboardContent>

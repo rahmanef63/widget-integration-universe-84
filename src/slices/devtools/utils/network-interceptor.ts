@@ -1,48 +1,43 @@
 
-/**
- * Intercepts and monitors network requests for the devtools
- */
+import { DevtoolsService } from '../services/devtools.service';
+import { NetworkRequest } from '../types';
 
-type NetworkRequestData = {
-  id: string;
+// Save the original fetch
+const originalFetch = window.fetch;
+
+// Type for the network request that's in progress
+type PendingRequest = {
   url: string;
   method: string;
-  headers: Record<string, string>;
-  body?: any;
   startTime: number;
-  endTime?: number;
-  status?: number;
-  statusText?: string;
-  response?: any;
-  error?: string;
-  duration?: number;
+  requestHeaders?: Record<string, string>;
+  requestBody?: any;
 };
 
-class NetworkInterceptorClass {
-  private originalFetch: typeof window.fetch;
-  private requests: Map<string, NetworkRequestData> = new Map();
-  private listeners: Array<(requests: NetworkRequestData[]) => void> = [];
+export class NetworkInterceptor {
+  private static isEnabled = false;
+  private static pendingRequests: Record<string, PendingRequest> = {};
 
-  constructor() {
-    this.originalFetch = window.fetch;
+  public static enable(): void {
+    if (this.isEnabled) return;
+    
+    // Monkey patch fetch
+    window.fetch = this.interceptFetch.bind(this);
+    this.isEnabled = true;
   }
 
-  enable() {
-    if (window.fetch !== this.interceptFetch) {
-      window.fetch = this.interceptFetch;
-    }
+  public static disable(): void {
+    if (!this.isEnabled) return;
+    
+    // Restore original fetch
+    window.fetch = originalFetch;
+    this.isEnabled = false;
   }
 
-  disable() {
-    if (window.fetch !== this.originalFetch) {
-      window.fetch = this.originalFetch;
-    }
-  }
-
-  private interceptFetch = async (
+  private static async interceptFetch(
     input: RequestInfo | URL, 
     init?: RequestInit
-  ): Promise<Response> => {
+  ): Promise<Response> {
     // Get the URL string regardless of input type
     const url = typeof input === 'string' 
       ? input 
@@ -56,114 +51,123 @@ class NetworkInterceptorClass {
     const requestId = `${method}-${url}-${Date.now()}`;
     const startTime = Date.now();
     
-    // Create request data
-    const requestData: NetworkRequestData = {
-      id: requestId,
+    // Store the request details
+    this.pendingRequests[requestId] = {
       url,
       method,
-      headers: this.getHeaders(input, init),
-      body: init?.body,
       startTime,
+      requestHeaders: init?.headers ? this.headersToObject(init.headers) : undefined,
+      requestBody: init?.body ? this.parseRequestBody(init.body) : undefined,
     };
     
-    this.requests.set(requestId, requestData);
-    this.notifyListeners();
-    
     try {
-      const response = await this.originalFetch.call(window, input, init);
-      const endTime = Date.now();
-      const duration = endTime - startTime;
+      // Make the actual request
+      const response = await originalFetch(input, init);
       
-      // Clone the response to read its body
+      // Clone the response so we can read the body
       const clonedResponse = response.clone();
-      let responseData;
+      let responseBody: any;
       
       try {
-        const contentType = clonedResponse.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          responseData = await clonedResponse.json();
-        } else {
-          responseData = await clonedResponse.text();
+        // Try to parse the response as JSON
+        responseBody = await clonedResponse.json();
+      } catch (e) {
+        // If it's not JSON, get it as text
+        try {
+          responseBody = await clonedResponse.text();
+        } catch (e) {
+          responseBody = 'Unable to parse response body';
         }
-      } catch (error) {
-        responseData = 'Unable to parse response body';
       }
       
-      // Update request data with response information
-      const updatedRequestData = {
-        ...requestData,
-        endTime,
+      // Record the completed request
+      const endTime = Date.now();
+      const pending = this.pendingRequests[requestId];
+      const networkRequest: Omit<NetworkRequest, 'id'> = {
+        url: pending.url,
+        method: pending.method,
         status: response.status,
         statusText: response.statusText,
-        response: responseData,
-        duration,
+        requestHeaders: pending.requestHeaders,
+        responseHeaders: this.headersToObject(response.headers),
+        requestBody: pending.requestBody,
+        responseBody,
+        startTime: pending.startTime,
+        endTime,
+        duration: endTime - pending.startTime,
       };
       
-      this.requests.set(requestId, updatedRequestData);
-      this.notifyListeners();
+      // Delete the pending request
+      delete this.pendingRequests[requestId];
+      
+      // Add to devtools
+      DevtoolsService.addNetworkRequest(networkRequest);
       
       return response;
     } catch (error) {
+      // Record the error
       const endTime = Date.now();
-      const duration = endTime - startTime;
+      const pending = this.pendingRequests[requestId];
       
-      // Update request data with error information
-      const updatedRequestData = {
-        ...requestData,
+      const networkRequest: Omit<NetworkRequest, 'id'> = {
+        url: pending.url,
+        method: pending.method,
+        status: 0,
+        statusText: 'Error',
+        requestHeaders: pending.requestHeaders,
+        requestBody: pending.requestBody,
+        startTime: pending.startTime,
         endTime,
+        duration: endTime - pending.startTime,
         error: error instanceof Error ? error.message : String(error),
-        duration,
       };
       
-      this.requests.set(requestId, updatedRequestData);
-      this.notifyListeners();
+      // Delete the pending request
+      delete this.pendingRequests[requestId];
       
+      // Add to devtools
+      DevtoolsService.addNetworkRequest(networkRequest);
+      
+      // Re-throw the error
       throw error;
     }
-  };
+  }
   
-  private getHeaders(input: RequestInfo | URL, init?: RequestInit): Record<string, string> {
-    const headers: Record<string, string> = {};
+  private static headersToObject(headers: Headers | string[][] | Record<string, string>): Record<string, string> {
+    const result: Record<string, string> = {};
     
-    if (init?.headers) {
-      if (init.headers instanceof Headers) {
-        init.headers.forEach((value, key) => {
-          headers[key] = value;
-        });
-      } else if (Array.isArray(init.headers)) {
-        init.headers.forEach(([key, value]) => {
-          headers[key] = value;
-        });
-      } else {
-        Object.entries(init.headers).forEach(([key, value]) => {
-          headers[key] = value as string;
-        });
+    if (headers instanceof Headers) {
+      headers.forEach((value, key) => {
+        result[key] = value;
+      });
+    } else if (Array.isArray(headers)) {
+      headers.forEach(([key, value]) => {
+        result[key] = value;
+      });
+    } else {
+      return headers;
+    }
+    
+    return result;
+  }
+  
+  private static parseRequestBody(body: BodyInit): any {
+    if (body instanceof FormData) {
+      const result: Record<string, any> = {};
+      body.forEach((value, key) => {
+        result[key] = value;
+      });
+      return result;
+    }
+    
+    if (typeof body === 'string') {
+      try {
+        return JSON.parse(body);
+      } catch (e) {
+        return body;
       }
     }
     
-    return headers;
-  }
-  
-  getAllRequests(): NetworkRequestData[] {
-    return Array.from(this.requests.values());
-  }
-  
-  clearRequests() {
-    this.requests.clear();
-    this.notifyListeners();
-  }
-  
-  subscribe(listener: (requests: NetworkRequestData[]) => void) {
-    this.listeners.push(listener);
-    return () => {
-      this.listeners = this.listeners.filter(l => l !== listener);
-    };
-  }
-  
-  private notifyListeners() {
-    const requests = this.getAllRequests();
-    this.listeners.forEach(listener => listener(requests));
+    return String(body);
   }
 }
-
-export const NetworkInterceptor = new NetworkInterceptorClass();

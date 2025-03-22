@@ -53,7 +53,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                         to={item.path} 
                         onClick={() => handleNavigation(item.path)}
                         className={cn(
-                          "flex items-center gap-2",
+                          "flex items-center space-x-2",
                           activePath === item.path && "font-medium"
                         )}
                       >

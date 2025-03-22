@@ -5,13 +5,11 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { renderIcon } from '@/shared/icon-picker/utils';
-import {
-  LogsPanel,
-  NetworkPanel,
-  PerformancePanel,
-  StatePanel,
-  SettingsPanel
-} from '../';
+import LogsPanel from '../LogsPanel/LogsPanel';
+import NetworkPanel from '../NetworkPanel/NetworkPanel';
+import PerformancePanel from '../PerformancePanel/PerformancePanel';
+import StatePanel from '../StatePanel/StatePanel';
+import SettingsPanel from '../SettingsPanel/SettingsPanel';
 import { PerformanceMonitor } from '../../utils/performance-monitor';
 import { NetworkInterceptor } from '../../utils/network-interceptor';
 import { StateTracker } from '../../utils/state-tracker';
@@ -36,7 +34,7 @@ const DevtoolsPanel: React.FC<DevtoolsPanelProps> = ({ className }) => {
     right: 'fixed right-0 top-0 bottom-0 w-[30rem] border-l',
   };
   
-  // Setup monitoring tools
+  // Set up monitoring tools - ALWAYS run this effect regardless of config state
   useEffect(() => {
     if (config.enabled) {
       // Initialize network interceptor
@@ -71,13 +69,6 @@ const DevtoolsPanel: React.FC<DevtoolsPanelProps> = ({ className }) => {
     }
   }, [config.enabled, config.tabs]);
   
-  // Handle tab selection
-  useEffect(() => {
-    if (!config.tabs.includes(activeTab) && config.tabs.length > 0) {
-      setActiveTab(config.tabs[0]);
-    }
-  }, [activeTab, config.tabs, setActiveTab]);
-  
   // If devtools are disabled, render nothing
   if (!config.enabled) return null;
   
@@ -95,6 +86,14 @@ const DevtoolsPanel: React.FC<DevtoolsPanelProps> = ({ className }) => {
       </Button>
     );
   }
+  
+  // Set active tab outside of render to prevent hooks inconsistency errors
+  // Move this to a separate useEffect that always runs
+  useEffect(() => {
+    if (!config.tabs.includes(activeTab) && config.tabs.length > 0) {
+      setActiveTab(config.tabs[0]);
+    }
+  }, [activeTab, config.tabs, setActiveTab]);
   
   // Available tabs configuration
   const tabsConfig = [
