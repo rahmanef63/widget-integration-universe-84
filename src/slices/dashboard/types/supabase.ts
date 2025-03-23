@@ -1,4 +1,6 @@
 
+import { DashboardSidebarSectionProps } from '.';
+
 export interface SupabaseDashboard {
   id: string;
   name: string;

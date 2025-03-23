@@ -84,7 +84,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                     </SidebarMenuButton>
                     
                     {item.badge && (
-                      <SidebarMenuBadge variant={item.badge_variant}>
+                      <SidebarMenuBadge className={item.badge_variant ? `bg-${item.badge_variant}-500` : undefined}>
                         {item.badge}
                       </SidebarMenuBadge>
                     )}
