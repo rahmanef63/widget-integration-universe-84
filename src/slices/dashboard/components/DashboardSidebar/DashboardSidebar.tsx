@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { renderIcon } from '@/shared/icon-picker/utils';
 import { DashboardSidebarProps } from '../../types';
+import { DashboardSwitcher } from '../';
 import {
   Sidebar,
   SidebarContent,
@@ -24,6 +25,9 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   activePath = '',
   onNavigate,
   children,
+  dashboards = [],
+  currentDashboard = null,
+  onDashboardSwitch,
 }) => {
   const { state } = useSidebar();
   const isCollapsed = state === 'collapsed';
@@ -46,6 +50,17 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
       </SidebarHeader>
       
       <SidebarContent>
+        {/* Dashboard Switcher */}
+        {dashboards.length > 0 && currentDashboard && onDashboardSwitch && (
+          <div className="px-3 py-2">
+            <DashboardSwitcher
+              currentDashboard={currentDashboard}
+              dashboards={dashboards}
+              onDashboardSwitch={onDashboardSwitch}
+            />
+          </div>
+        )}
+        
         {sections.map((section, index) => (
           <SidebarGroup key={`section-${index}`}>
             <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
@@ -69,7 +84,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                     </SidebarMenuButton>
                     
                     {item.badge && (
-                      <SidebarMenuBadge>
+                      <SidebarMenuBadge variant={item.badge_variant}>
                         {item.badge}
                       </SidebarMenuBadge>
                     )}

@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { UserPreferencesProvider } from "@/shared/store/user-preferences.context";
+import { DashboardProvider } from "@/slices/dashboard/contexts/dashboard.context";
 import { ROUTES } from "@/core/constants/routes";
 
 // Lazy load pages for better performance
@@ -39,15 +40,24 @@ const App = () => (
                 <Route path={ROUTES.HOME} element={<Home />} />
                 <Route path={ROUTES.DOCUMENTATION} element={<Documentation />} />
                 <Route path={ROUTES.ECOSYSTEM} element={<Ecosystem />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/dashboard/analytics" element={<Analytics />} />
-                <Route path="/dashboard/widgets" element={<MyWidgets />} />
-                <Route path="/dashboard/store" element={<WidgetStore />} />
-                <Route path="/dashboard/integrations" element={<Integrations />} />
-                <Route path="/dashboard/profile" element={<Profile />} />
-                <Route path="/dashboard/preferences" element={<Preferences />} />
-                <Route path="/dashboard/support" element={<Support />} />
-                <Route path="/dashboard/devtools" element={<DevTools />} />
+                
+                {/* Wrap all dashboard routes with DashboardProvider */}
+                <Route path="/dashboard/*" element={
+                  <DashboardProvider>
+                    <Routes>
+                      <Route path="/" element={<Dashboard />} />
+                      <Route path="analytics" element={<Analytics />} />
+                      <Route path="widgets" element={<MyWidgets />} />
+                      <Route path="store" element={<WidgetStore />} />
+                      <Route path="integrations" element={<Integrations />} />
+                      <Route path="profile" element={<Profile />} />
+                      <Route path="preferences" element={<Preferences />} />
+                      <Route path="support" element={<Support />} />
+                      <Route path="devtools" element={<DevTools />} />
+                    </Routes>
+                  </DashboardProvider>
+                } />
+                
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
                 <Route path="*" element={<Navigate to={ROUTES.NOT_FOUND} replace />} />

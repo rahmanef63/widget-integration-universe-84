@@ -3,30 +3,63 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DashboardLayoutProps } from '../../types';
 import { DashboardSidebar } from '../';
-import { DASHBOARD_SIDEBAR_SECTIONS } from '../../constants/sidebar-items';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { UserCircle } from 'lucide-react';
 import { DashboardContent } from '../';
-import { DashboardHeader } from '../';
-import { useDashboardTitle } from '../../hooks/useDashboardTitle';
+import { useDashboard } from '../../contexts/dashboard.context';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const location = useLocation();
   const [activePath, setActivePath] = useState(location.pathname);
-  const { title, subtitle } = useDashboardTitle(activePath, DASHBOARD_SIDEBAR_SECTIONS);
+  const { currentDashboard, dashboards, menuSections, isLoading, switchDashboard } = useDashboard();
 
   const handleNavigation = (path: string) => {
     setActivePath(path);
   };
 
+  // Show loading state while dashboard data is being fetched
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex w-full">
+        <div className="w-64 bg-background border-r">
+          <Skeleton className="h-10 w-40 mx-auto my-4" />
+          <div className="p-4 space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="space-y-2">
+                <Skeleton className="h-5 w-20" />
+                <div className="space-y-1">
+                  {[1, 2, 3].map((j) => (
+                    <Skeleton key={j} className="h-8 w-full" />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex-1 p-6">
+          <Skeleton className="h-12 w-full max-w-lg" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-40 w-full" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen flex w-full">
         <DashboardSidebar 
-          sections={DASHBOARD_SIDEBAR_SECTIONS} 
+          sections={menuSections} 
           activePath={activePath}
           onNavigate={handleNavigation}
+          dashboards={dashboards}
+          currentDashboard={currentDashboard}
+          onDashboardSwitch={switchDashboard}
         >
           <Button variant="outline" size="sm" className="w-full">
             <UserCircle className="mr-2 h-4 w-4" />
@@ -36,10 +69,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         
         <SidebarInset className="p-0">
           <DashboardContent className="p-6">
-            <DashboardHeader 
-              title={title} 
-              subtitle={subtitle}
-            />
             {children}
           </DashboardContent>
         </SidebarInset>
