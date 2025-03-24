@@ -1,104 +1,58 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { cn } from '@/lib/utils';
-import { renderIcon } from '@/shared/icon-picker/utils';
-import { DashboardSidebarProps } from '../../types';
-import { DashboardSwitcher } from '../';
+"use client"
+
+import React, { useContext } from 'react';
+import { DashboardContext } from '../../contexts/dashboard.context';
+
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuBadge,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  useSidebar,
-} from '@/components/ui/sidebar';
+  SidebarRail,
+} from "@/components/ui/sidebar";
 
-const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
-  sections,
-  activePath = '',
-  onNavigate,
-  children,
-  dashboards = [],
-  currentDashboard = null,
-  onDashboardSwitch,
-}) => {
-  const { state } = useSidebar();
-  const isCollapsed = state === 'collapsed';
-  
-  const handleNavigation = (path: string) => {
-    if (onNavigate) {
-      onNavigate(path);
-    }
-  };
+import DashboardSwitcher from './DashboardSwitcher';
+import NavMain from './NavMain';
+import NavProjects from './NavProjects';
+import NavUser from './NavUser';
+
+const DashboardSidebar: React.FC = () => {
+  const { currentDashboard, dashboards, menuSections, switchDashboard, isLoading } = useContext(DashboardContext)!;
 
   return (
-    <Sidebar>
-      <SidebarHeader className="flex items-center justify-center py-4">
-        <h1 className={cn(
-          "transition-all duration-200 font-bold",
-          isCollapsed ? "text-md" : "text-xl"
-        )}>
-          {isCollapsed ? "WU" : "Widget Universe"}
-        </h1>
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <DashboardSwitcher 
+          dashboards={dashboards}
+          currentDashboard={currentDashboard}
+          onSwitchDashboard={switchDashboard}
+        />
       </SidebarHeader>
-      
       <SidebarContent>
-        {/* Dashboard Switcher */}
-        {dashboards.length > 0 && currentDashboard && onDashboardSwitch && (
-          <div className="px-3 py-2">
-            <DashboardSwitcher
-              currentDashboard={currentDashboard}
-              dashboards={dashboards}
-              onDashboardSwitch={onDashboardSwitch}
-            />
-          </div>
-        )}
-        
-        {sections.map((section, index) => (
-          <SidebarGroup key={`section-${index}`}>
-            <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {section.items.map((item, itemIndex) => (
-                  <SidebarMenuItem key={`item-${itemIndex}`}>
-                    <SidebarMenuButton 
-                      asChild 
-                      isActive={activePath === item.path}
-                      tooltip={item.label}
-                    >
-                      <Link 
-                        to={item.path} 
-                        onClick={() => handleNavigation(item.path)}
-                        className="flex items-center gap-2"
-                      >
-                        {renderIcon(item.icon, { size: 20 })}
-                        <span>{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                    
-                    {item.badge && (
-                      <SidebarMenuBadge className={item.badge_variant ? `bg-${item.badge_variant}-500` : undefined}>
-                        {item.badge}
-                      </SidebarMenuBadge>
-                    )}
-                  </SidebarMenuItem>
+        {isLoading ? (
+          // Show skeleton items when loading
+          Array.from({ length: 5 }).map((_, index) => (
+            <div key={index} className="animate-pulse p-2">
+              <div className="h-4 w-24 bg-muted rounded mb-3"></div>
+              <div className="space-y-2">
+                {Array.from({ length: 3 }).map((_, idx) => (
+                  <div key={idx} className="h-8 bg-muted rounded"></div>
                 ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
+              </div>
+            </div>
+          ))
+        ) : (
+          <>
+            <NavMain sections={menuSections} />
+            <NavProjects />
+          </>
+        )}
       </SidebarContent>
-      
-      <SidebarFooter className="p-4">
-        {children}
+      <SidebarFooter>
+        <NavUser />
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 };

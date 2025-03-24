@@ -86,7 +86,10 @@ export const fetchMenuItems = async (menuId: string): Promise<any[]> => {
     icon: item.icon || 'Circle', // Default icon if null
     badge: null, // Add these properties for compatibility with the sidebar
     badge_variant: null,
-    order_position: 0 // Default order position
+    order_position: 0, // Default order position
+    is_label: item.is_label,
+    is_switch: item.is_switch,
+    parent_id: item.parent_id
   }));
 };
 
@@ -107,16 +110,23 @@ export const organizeMenuItemsBySections = async (
     for (const menu of menus) {
       const menuItems = await fetchMenuItems(menu.id);
       
-      if (menuItems.length > 0) {
+      // Process items to handle parent-child relationships
+      const topLevelItems = menuItems.filter(item => !item.parent_id);
+      const childItems = menuItems.filter(item => item.parent_id);
+      
+      // Add children to their parent items
+      const processedItems = topLevelItems.map(item => {
+        const children = childItems.filter(child => child.parent_id === item.id);
+        if (children.length > 0) {
+          return { ...item, children };
+        }
+        return item;
+      });
+      
+      if (processedItems.length > 0) {
         sections.push({
           title: menu.title,
-          items: menuItems.map(item => ({
-            label: item.label,
-            path: item.path,
-            icon: item.icon,
-            badge: item.badge,
-            badge_variant: item.badge_variant
-          }))
+          items: processedItems
         });
       }
     }
