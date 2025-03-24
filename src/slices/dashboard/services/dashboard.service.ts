@@ -78,6 +78,7 @@ export const fetchMenuItems = async (menuId: string): Promise<SupabaseMenuItem[]
     throw error;
   }
   
+  // Ensure the data matches our expected type structure
   return data as SupabaseMenuItem[];
 };
 

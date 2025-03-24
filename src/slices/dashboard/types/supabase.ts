@@ -20,6 +20,7 @@ export interface SupabaseDashboardMenu {
   updated_at: string | null;
 }
 
+// Updated to match the database structure
 export interface SupabaseMenuItem {
   id: string;
   menu_id: string;
