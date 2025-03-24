@@ -33,6 +33,7 @@ export interface SupabaseMenuItem {
   permissions: string[];
   description: string | null;
   created_at: string | null;
+  menu_id?: string; // Add this to match the query in fetchMenuItems
 }
 
 // Interface for the item structure needed by the sidebar
