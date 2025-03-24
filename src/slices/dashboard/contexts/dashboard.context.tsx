@@ -3,12 +3,14 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   SupabaseDashboard, 
-  SupabaseDashboardMenu, 
-  SupabaseMenuItem,
   DashboardContextState 
 } from '../types/supabase';
 import { DashboardSidebarSectionProps } from '../types';
-import { fetchDashboards, fetchDashboardMenus, fetchAllMenuItems } from '@/shared/services/supabase';
+import { 
+  fetchDashboards, 
+  fetchDashboardById, 
+  organizeMenuItemsBySections 
+} from '../services/dashboard.service';
 import { toast } from 'sonner';
 
 const defaultContext: DashboardContextState = {
@@ -36,36 +38,6 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
   const [menuSections, setMenuSections] = useState<DashboardSidebarSectionProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Group menu items by their menu sections
-  const organizeMenuItemsBySections = (
-    menus: SupabaseDashboardMenu[],
-    items: SupabaseMenuItem[]
-  ): DashboardSidebarSectionProps[] => {
-    const sections: DashboardSidebarSectionProps[] = [];
-
-    menus.forEach(menu => {
-      const menuItems = items
-        .filter(item => item.menu_id === menu.id)
-        .sort((a, b) => a.order - b.order)
-        .map(item => ({
-          label: item.label,
-          path: item.path,
-          icon: item.icon,
-          badge: item.badge,
-          badge_variant: item.badge_variant
-        }));
-
-      if (menuItems.length > 0) {
-        sections.push({
-          title: menu.title,
-          items: menuItems
-        });
-      }
-    });
-
-    return sections;
-  };
 
   const loadDashboardData = async (dashboardId?: string) => {
     try {
@@ -102,14 +74,8 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
       
       setCurrentDashboard(targetDashboard);
       
-      // Load menus for the dashboard
-      const dashboardMenus = await fetchDashboardMenus(targetDashboard.id);
-      
-      // Load all menu items
-      const allMenuItems = await fetchAllMenuItems();
-      
-      // Organize menu items by section
-      const sections = organizeMenuItemsBySections(dashboardMenus, allMenuItems);
+      // Load menu sections for the dashboard
+      const sections = await organizeMenuItemsBySections(targetDashboard.id);
       setMenuSections(sections);
       
       setIsLoading(false);

@@ -39,30 +39,71 @@ export type Database = {
           },
         ]
       }
+      dashboard_menus: {
+        Row: {
+          created_at: string | null
+          dashboard_id: string
+          id: string
+          order_position: number
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          dashboard_id: string
+          id?: string
+          order_position?: number
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          dashboard_id?: string
+          id?: string
+          order_position?: number
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dashboard_menus_dashboard_id_fkey"
+            columns: ["dashboard_id"]
+            isOneToOne: false
+            referencedRelation: "dashboards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dashboards: {
         Row: {
           created_at: string | null
           description: string | null
           icon: string | null
           id: string
+          is_default: boolean | null
           name: string
           permissions: string[]
+          updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           description?: string | null
           icon?: string | null
           id: string
+          is_default?: boolean | null
           name: string
           permissions?: string[]
+          updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           description?: string | null
           icon?: string | null
           id?: string
+          is_default?: boolean | null
           name?: string
           permissions?: string[]
+          updated_at?: string | null
         }
         Relationships: []
       }

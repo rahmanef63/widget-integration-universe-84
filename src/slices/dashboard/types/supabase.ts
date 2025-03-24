@@ -4,10 +4,10 @@ import { DashboardSidebarSectionProps } from '.';
 export interface SupabaseDashboard {
   id: string;
   name: string;
-  description: string;
-  icon: string;
-  created_at: string;
-  updated_at: string;
+  description: string | null;
+  icon: string | null;
+  created_at: string | null;
+  updated_at: string | null;
   is_default?: boolean;
 }
 
@@ -15,9 +15,9 @@ export interface SupabaseDashboardMenu {
   id: string;
   dashboard_id: string;
   title: string;
-  order: number;
-  created_at: string;
-  updated_at: string;
+  order_position: number;
+  created_at: string | null;
+  updated_at: string | null;
 }
 
 export interface SupabaseMenuItem {
@@ -26,11 +26,11 @@ export interface SupabaseMenuItem {
   label: string;
   path: string;
   icon: string;
-  badge?: string;
-  badge_variant?: string;
-  order: number;
-  created_at: string;
-  updated_at: string;
+  badge?: string | null;
+  badge_variant?: string | null;
+  order_position: number;
+  created_at: string | null;
+  updated_at: string | null;
 }
 
 export interface DashboardContextState {
