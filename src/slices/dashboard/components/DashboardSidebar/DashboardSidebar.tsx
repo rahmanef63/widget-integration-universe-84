@@ -43,9 +43,13 @@ const DashboardSidebar: React.FC = () => {
             </div>
           ))
         ) : (
-          <div className="flex flex-col h-full justify-between">
-            <NavMain sections={menuSections} />
-            <NavProjects />
+          <div className="flex flex-col h-full">
+            <div className="flex-grow">
+              <NavMain sections={menuSections} />
+            </div>
+            <div className="mt-auto">
+              <NavProjects />
+            </div>
           </div>
         )}
       </SidebarContent>

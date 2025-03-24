@@ -15,7 +15,15 @@ export interface SidebarItemBase {
 }
 
 // Extended interface with children property
-export interface DashboardSidebarItemProps extends SidebarItemBase {
+export interface DashboardSidebarItemProps {
+  id: string;
+  icon?: string;
+  label: string;
+  path?: string;
+  badge?: string | number;
+  is_label: boolean;
+  is_switch: boolean;
+  parent_id: string | null;
   children: DashboardSidebarItemProps[];
 }
 

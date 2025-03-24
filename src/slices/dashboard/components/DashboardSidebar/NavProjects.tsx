@@ -8,7 +8,7 @@ import {
   LayoutDashboard,
   Layers,
   ShoppingBag,
-  PuzzlePiece,
+  Puzzle,
   UserCircle,
   Settings,
   HelpCircle,
@@ -35,7 +35,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-// Static projects based on the provided routes
+// Static menu items based on the provided routes
 const staticProjects = [
   {
     id: 'dashboard',
@@ -65,7 +65,7 @@ const staticProjects = [
     id: 'integrations',
     name: 'Integrations',
     path: '/dashboard/integrations',
-    icon: <PuzzlePiece size={16} />,
+    icon: <Puzzle size={16} />,
   },
   {
     id: 'profile',
