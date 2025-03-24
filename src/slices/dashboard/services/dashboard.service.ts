@@ -80,7 +80,8 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
   }
   
   // Map the data from the database schema to our sidebar item structure
-  return data.map(item => ({
+  // Using explicit type annotation to avoid recursive type instantiation
+  const sidebarItems: SidebarItem[] = data.map(item => ({
     id: item.id,
     label: item.name, // Map name to label for sidebar display
     path: item.path || '#', // Default path to # if null
@@ -90,8 +91,11 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
     isActive: false, // Default active state
     is_label: item.is_label,
     is_switch: item.is_switch,
-    parent_id: item.parent_id
+    parent_id: item.parent_id,
+    children: [] // Initialize with empty children array
   }));
+  
+  return sidebarItems;
 };
 
 /**
@@ -115,7 +119,7 @@ export const organizeMenuItemsBySections = async (
       const topLevelItems = menuItems.filter(item => !item.parent_id);
       const childItems = menuItems.filter(item => item.parent_id);
       
-      // Add children to their parent items
+      // Add children to their parent items - avoid mutating the original items directly
       const processedItems = topLevelItems.map(item => {
         const children = childItems.filter(child => child.parent_id === item.id);
         if (children.length > 0) {

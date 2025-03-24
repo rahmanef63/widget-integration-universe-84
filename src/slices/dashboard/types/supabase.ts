@@ -48,7 +48,7 @@ export interface SidebarItem {
   is_label: boolean;
   is_switch: boolean;
   parent_id: string | null;
-  children?: SidebarItem[];
+  children?: SidebarItem[]; // Break potential infinite recursion by making this optional
 }
 
 export interface DashboardContextState {
