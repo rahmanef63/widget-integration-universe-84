@@ -3,7 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { 
   SupabaseDashboard, 
   SupabaseDashboardMenu, 
-  SupabaseMenuItem 
+  SupabaseMenuItem,
+  SidebarItem
 } from '../types/supabase';
 import { DashboardSidebarSectionProps } from '../types';
 
@@ -66,7 +67,7 @@ export const fetchDashboardMenus = async (dashboardId: string): Promise<Supabase
 /**
  * Fetch menu items for a specific menu
  */
-export const fetchMenuItems = async (menuId: string): Promise<any[]> => {
+export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => {
   const { data, error } = await supabase
     .from('menu_items')
     .select('*')
@@ -84,9 +85,9 @@ export const fetchMenuItems = async (menuId: string): Promise<any[]> => {
     label: item.name, // Map name to label for sidebar display
     path: item.path || '#', // Default path to # if null
     icon: item.icon || 'Circle', // Default icon if null
-    badge: null, // Add these properties for compatibility with the sidebar
-    badge_variant: null,
-    order_position: 0, // Default order position
+    badge: null, // Default badge
+    badge_variant: null, // Default badge variant
+    isActive: false, // Default active state
     is_label: item.is_label,
     is_switch: item.is_switch,
     parent_id: item.parent_id

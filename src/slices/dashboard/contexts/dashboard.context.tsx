@@ -22,7 +22,8 @@ const defaultContext: DashboardContextState = {
   switchDashboard: () => {}
 };
 
-const DashboardContext = createContext<DashboardContextState>(defaultContext);
+// Export the context so it can be imported elsewhere
+export const DashboardContext = createContext<DashboardContextState>(defaultContext);
 
 export const useDashboard = () => useContext(DashboardContext);
 

@@ -53,19 +53,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen flex w-full">
-        <DashboardSidebar 
-          sections={menuSections} 
-          activePath={activePath}
-          onNavigate={handleNavigation}
-          dashboards={dashboards}
-          currentDashboard={currentDashboard}
-          onDashboardSwitch={switchDashboard}
-        >
-          <Button variant="outline" size="sm" className="w-full">
-            <UserCircle className="mr-2 h-4 w-4" />
-            <span>Account</span>
-          </Button>
-        </DashboardSidebar>
+        {/* The DashboardSidebar has been updated to get props from context, 
+            so we don't need to pass props directly */}
+        <DashboardSidebar />
         
         <SidebarInset className="p-0">
           <DashboardContent className="p-6">

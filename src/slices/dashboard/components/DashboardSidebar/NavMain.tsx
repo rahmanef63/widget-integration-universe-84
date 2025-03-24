@@ -4,7 +4,6 @@
 import React from 'react';
 import { ChevronRight } from "lucide-react";
 import { DashboardSidebarSectionProps } from '../../types';
-import { SupabaseMenuItem } from '../../types/supabase';
 
 import {
   Collapsible,

@@ -35,6 +35,21 @@ export interface SupabaseMenuItem {
   created_at: string | null;
 }
 
+// Interface for the item structure needed by the sidebar
+export interface SidebarItem {
+  id: string;
+  label: string;
+  path: string;
+  icon: string;
+  badge?: string | number | null;
+  badge_variant?: string | null;
+  isActive?: boolean;
+  is_label: boolean;
+  is_switch: boolean;
+  parent_id: string | null;
+  children?: SidebarItem[];
+}
+
 export interface DashboardContextState {
   currentDashboard: SupabaseDashboard | null;
   dashboards: SupabaseDashboard[];

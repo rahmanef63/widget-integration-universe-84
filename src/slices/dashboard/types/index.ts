@@ -1,14 +1,9 @@
 
 import { ReactNode } from 'react';
-import { SupabaseDashboard } from './supabase';
+import { SupabaseDashboard, SidebarItem } from './supabase';
 
-export interface DashboardSidebarItemProps {
-  icon: string;
-  label: string;
-  path: string;
+export interface DashboardSidebarItemProps extends SidebarItem {
   isActive?: boolean;
-  badge?: string | number;
-  badge_variant?: string;
 }
 
 export interface DashboardSidebarSectionProps {
@@ -17,7 +12,7 @@ export interface DashboardSidebarSectionProps {
 }
 
 export interface DashboardSidebarProps {
-  sections: DashboardSidebarSectionProps[];
+  sections?: DashboardSidebarSectionProps[];
   activePath?: string;
   onNavigate?: (path: string) => void;
   children?: ReactNode;
