@@ -78,8 +78,22 @@ export const fetchMenuItems = async (menuId: string): Promise<SupabaseMenuItem[]
     throw error;
   }
   
-  // Ensure the data matches our expected type structure
-  return data as SupabaseMenuItem[];
+  // Transform the data to match our expected type structure if needed
+  // This maps database fields to our TypeScript interface
+  const transformedData = data.map(item => ({
+    id: item.id,
+    menu_id: item.menu_id,
+    label: item.label,
+    path: item.path,
+    icon: item.icon,
+    badge: item.badge,
+    badge_variant: item.badge_variant,
+    order_position: item.order_position,
+    created_at: item.created_at,
+    updated_at: item.updated_at
+  }));
+  
+  return transformedData;
 };
 
 /**
