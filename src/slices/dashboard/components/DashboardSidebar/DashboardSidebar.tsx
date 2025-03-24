@@ -29,7 +29,7 @@ const DashboardSidebar: React.FC = () => {
           onSwitchDashboard={switchDashboard}
         />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="flex flex-col h-full">
         {isLoading ? (
           // Show skeleton items when loading
           Array.from({ length: 5 }).map((_, index) => (
@@ -43,10 +43,10 @@ const DashboardSidebar: React.FC = () => {
             </div>
           ))
         ) : (
-          <>
+          <div className="flex flex-col h-full justify-between">
             <NavMain sections={menuSections} />
             <NavProjects />
-          </>
+          </div>
         )}
       </SidebarContent>
       <SidebarFooter>

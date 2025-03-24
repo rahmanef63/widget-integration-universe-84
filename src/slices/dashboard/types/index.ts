@@ -1,7 +1,23 @@
-import { ReactNode } from 'react';
-import { SupabaseDashboard, SidebarItem } from './supabase';
 
-export interface DashboardSidebarItemProps extends SidebarItem {}
+import { ReactNode } from 'react';
+import { SupabaseDashboard } from './supabase';
+
+// Base interface without recursive children reference
+export interface SidebarItemBase {
+  id: string;
+  icon?: string;
+  label: string;
+  path?: string;
+  badge?: string | number;
+  is_label: boolean;
+  is_switch: boolean;
+  parent_id: string | null;
+}
+
+// Extended interface with children property
+export interface DashboardSidebarItemProps extends SidebarItemBase {
+  children: DashboardSidebarItemProps[];
+}
 
 export interface DashboardSidebarSectionProps {
   title: string;

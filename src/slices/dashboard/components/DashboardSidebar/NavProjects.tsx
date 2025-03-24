@@ -4,9 +4,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Folder,
-  Forward,
+  BarChart,
+  LayoutDashboard,
+  Layers,
+  ShoppingBag,
+  PuzzlePiece,
+  UserCircle,
+  Settings,
+  HelpCircle,
+  Code,
   MoreHorizontal,
+  Forward,
   Trash2,
 } from "lucide-react";
 
@@ -26,27 +34,62 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { renderIcon } from '@/shared/icon-picker/utils';
 
-// Static projects section
+// Static projects based on the provided routes
 const staticProjects = [
   {
-    id: 'project-1',
+    id: 'dashboard',
+    name: 'Dashboard',
+    path: '/dashboard',
+    icon: <LayoutDashboard size={16} />,
+  },
+  {
+    id: 'analytics',
     name: 'Analytics',
-    path: '/analytics',
-    icon: 'PieChart',
+    path: '/dashboard/analytics',
+    icon: <BarChart size={16} />,
   },
   {
-    id: 'project-2',
-    name: 'Widgets',
-    path: '/widgets',
-    icon: 'Layout',
+    id: 'widgets',
+    name: 'My Widgets',
+    path: '/dashboard/widgets',
+    icon: <Layers size={16} />,
   },
   {
-    id: 'project-3',
-    name: 'Store',
-    path: '/store',
-    icon: 'Store',
+    id: 'store',
+    name: 'Widget Store',
+    path: '/dashboard/store',
+    icon: <ShoppingBag size={16} />,
+  },
+  {
+    id: 'integrations',
+    name: 'Integrations',
+    path: '/dashboard/integrations',
+    icon: <PuzzlePiece size={16} />,
+  },
+  {
+    id: 'profile',
+    name: 'Profile',
+    path: '/dashboard/profile',
+    icon: <UserCircle size={16} />,
+  },
+  {
+    id: 'preferences',
+    name: 'Preferences',
+    path: '/dashboard/preferences',
+    icon: <Settings size={16} />,
+  },
+  {
+    id: 'support',
+    name: 'Support',
+    path: '/dashboard/support',
+    icon: <HelpCircle size={16} />,
+  },
+  {
+    id: 'devtools',
+    name: 'DevTools',
+    path: '/dashboard/devtools',
+    icon: <Code size={16} />,
   },
 ];
 
@@ -54,21 +97,21 @@ export function NavProjects() {
   const { isMobile } = useSidebar();
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Modules</SidebarGroupLabel>
+    <SidebarGroup className="group-data-[collapsible=icon]:hidden flex-1">
+      <SidebarGroupLabel>Navigation</SidebarGroupLabel>
       <SidebarMenu>
         {staticProjects.map((item) => (
           <SidebarMenuItem key={item.id}>
             <SidebarMenuButton asChild>
               <Link to={item.path}>
-                {renderIcon(item.icon)}
+                {item.icon}
                 <span>{item.name}</span>
               </Link>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuAction showOnHover>
-                  <MoreHorizontal />
+                  <MoreHorizontal size={16} />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
@@ -78,16 +121,12 @@ export function NavProjects() {
                 align={isMobile ? "end" : "start"}
               >
                 <DropdownMenuItem>
-                  <Folder className="text-muted-foreground mr-2" />
-                  <span>View Module</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Forward className="text-muted-foreground mr-2" />
-                  <span>Share Module</span>
+                  <Forward className="text-muted-foreground mr-2 h-4 w-4" />
+                  <span>Share Link</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Trash2 className="text-muted-foreground mr-2" />
+                  <Trash2 className="text-muted-foreground mr-2 h-4 w-4" />
                   <span>Remove from Sidebar</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
