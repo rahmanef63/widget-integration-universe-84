@@ -4,7 +4,8 @@ import {
   SupabaseDashboard, 
   SupabaseDashboardMenu, 
   SupabaseMenuItem,
-  SidebarItem
+  SidebarItem,
+  SidebarItemBase
 } from '../types/supabase';
 import { DashboardSidebarSectionProps } from '../types';
 
@@ -79,9 +80,8 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
     throw error;
   }
   
-  // Map the data from the database schema to our sidebar item structure
-  // Using explicit type annotation to avoid recursive type instantiation
-  const sidebarItems: SidebarItem[] = data.map(item => ({
+  // First map raw database items to base items without children
+  const baseItems: SidebarItemBase[] = data.map(item => ({
     id: item.id,
     label: item.name, // Map name to label for sidebar display
     path: item.path || '#', // Default path to # if null
@@ -92,10 +92,49 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
     is_label: item.is_label,
     is_switch: item.is_switch,
     parent_id: item.parent_id,
-    children: [] // Initialize with empty children array
   }));
   
+  // Then build the tree structure safely
+  const sidebarItems: SidebarItem[] = buildSidebarTree(baseItems);
+  
   return sidebarItems;
+};
+
+/**
+ * Build a tree of sidebar items from a flat list
+ */
+const buildSidebarTree = (items: SidebarItemBase[]): SidebarItem[] => {
+  // First identify top-level items and child items
+  const topLevelItems = items.filter(item => !item.parent_id);
+  const childItems = items.filter(item => item.parent_id);
+  
+  // Create a map for easier lookup
+  const itemMap = new Map<string, SidebarItemBase>();
+  items.forEach(item => itemMap.set(item.id, item));
+  
+  // Build the tree recursively but with a safe approach
+  const result: SidebarItem[] = topLevelItems.map(item => {
+    // Initial transformation to SidebarItem
+    const sidebarItem: SidebarItem = {
+      ...item,
+      children: []
+    };
+    
+    // Find direct children
+    const directChildren = childItems.filter(child => child.parent_id === item.id);
+    
+    // If there are children, process them (limited to one level for simplicity)
+    if (directChildren.length > 0) {
+      sidebarItem.children = directChildren.map(child => ({
+        ...child,
+        children: [] // Leaf nodes have empty children arrays
+      }));
+    }
+    
+    return sidebarItem;
+  });
+  
+  return result;
 };
 
 /**
@@ -115,23 +154,10 @@ export const organizeMenuItemsBySections = async (
     for (const menu of menus) {
       const menuItems = await fetchMenuItems(menu.id);
       
-      // Process items to handle parent-child relationships
-      const topLevelItems = menuItems.filter(item => !item.parent_id);
-      const childItems = menuItems.filter(item => item.parent_id);
-      
-      // Add children to their parent items - avoid mutating the original items directly
-      const processedItems = topLevelItems.map(item => {
-        const children = childItems.filter(child => child.parent_id === item.id);
-        if (children.length > 0) {
-          return { ...item, children };
-        }
-        return item;
-      });
-      
-      if (processedItems.length > 0) {
+      if (menuItems.length > 0) {
         sections.push({
           title: menu.title,
-          items: processedItems
+          items: menuItems
         });
       }
     }

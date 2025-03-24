@@ -36,8 +36,8 @@ export interface SupabaseMenuItem {
   menu_id?: string; // Add this to match the query in fetchMenuItems
 }
 
-// Interface for the item structure needed by the sidebar
-export interface SidebarItem {
+// Basic sidebar item without children
+export interface SidebarItemBase {
   id: string;
   label: string;
   path: string;
@@ -48,7 +48,11 @@ export interface SidebarItem {
   is_label: boolean;
   is_switch: boolean;
   parent_id: string | null;
-  children?: SidebarItem[]; // Break potential infinite recursion by making this optional
+}
+
+// Interface for the item structure needed by the sidebar
+export interface SidebarItem extends SidebarItemBase {
+  children: SidebarItem[]; // Now we can safely use the recursive type
 }
 
 export interface DashboardContextState {
