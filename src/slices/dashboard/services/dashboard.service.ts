@@ -69,6 +69,7 @@ export const fetchDashboardMenus = async (dashboardId: string): Promise<Supabase
  * Fetch menu items for a specific menu
  */
 export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => {
+  // Use a more explicit annotation for the return type to avoid deep recursion
   const { data, error } = await supabase
     .from('menu_items')
     .select('*')

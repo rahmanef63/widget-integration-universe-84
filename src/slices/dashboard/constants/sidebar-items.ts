@@ -12,7 +12,8 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         path: '/dashboard',
         is_label: false,
         is_switch: false,
-        parent_id: null
+        parent_id: null,
+        children: []
       },
       {
         id: 'dashboard-analytics',
@@ -22,7 +23,8 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         badge: 'New',
         is_label: false,
         is_switch: false,
-        parent_id: null
+        parent_id: null,
+        children: []
       },
     ],
   },
@@ -36,7 +38,8 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         path: '/dashboard/widgets',
         is_label: false,
         is_switch: false,
-        parent_id: null
+        parent_id: null,
+        children: []
       },
       {
         id: 'dashboard-store',
@@ -45,7 +48,8 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         path: '/dashboard/store',
         is_label: false,
         is_switch: false,
-        parent_id: null
+        parent_id: null,
+        children: []
       },
       {
         id: 'dashboard-integrations',
@@ -55,7 +59,8 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         badge: 3,
         is_label: false,
         is_switch: false,
-        parent_id: null
+        parent_id: null,
+        children: []
       },
     ],
   },
@@ -69,7 +74,8 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         path: '/dashboard/profile',
         is_label: false,
         is_switch: false,
-        parent_id: null
+        parent_id: null,
+        children: []
       },
       {
         id: 'dashboard-preferences',
@@ -78,7 +84,8 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         path: '/dashboard/preferences',
         is_label: false,
         is_switch: false,
-        parent_id: null
+        parent_id: null,
+        children: []
       },
       {
         id: 'dashboard-support',
@@ -87,7 +94,8 @@ export const DASHBOARD_SIDEBAR_SECTIONS: DashboardSidebarSectionProps[] = [
         path: '/dashboard/support',
         is_label: false,
         is_switch: false,
-        parent_id: null
+        parent_id: null,
+        children: []
       },
     ],
   },

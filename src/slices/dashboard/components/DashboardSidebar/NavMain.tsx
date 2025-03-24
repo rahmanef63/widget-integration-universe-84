@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { ChevronRight } from "lucide-react";
+import { Link } from 'react-router-dom';
 import { DashboardSidebarSectionProps } from '../../types';
 
 import {
@@ -89,9 +90,9 @@ const NavMain: React.FC<NavMainProps> = ({ sections }) => {
             {item.children?.map((subItem: any) => (
               <SidebarMenuSubItem key={subItem.id}>
                 <SidebarMenuSubButton asChild>
-                  <a href={subItem.path || '#'}>
+                  <Link to={subItem.path || '#'}>
                     <span>{subItem.label}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
             ))}
@@ -105,7 +106,7 @@ const NavMain: React.FC<NavMainProps> = ({ sections }) => {
   const renderRegularMenuItem = (item: any) => (
     <SidebarMenuItem key={item.id}>
       <SidebarMenuButton asChild tooltip={item.label}>
-        <a href={item.path || '#'}>
+        <Link to={item.path || '#'}>
           {item.icon && renderIcon(item.icon)}
           <span>{item.label}</span>
           {item.badge && (
@@ -113,7 +114,7 @@ const NavMain: React.FC<NavMainProps> = ({ sections }) => {
               {item.badge}
             </span>
           )}
-        </a>
+        </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );

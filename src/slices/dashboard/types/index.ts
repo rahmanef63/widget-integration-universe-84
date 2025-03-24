@@ -1,10 +1,7 @@
-
 import { ReactNode } from 'react';
 import { SupabaseDashboard, SidebarItem } from './supabase';
 
-export interface DashboardSidebarItemProps extends SidebarItem {
-  isActive?: boolean;
-}
+export interface DashboardSidebarItemProps extends SidebarItem {}
 
 export interface DashboardSidebarSectionProps {
   title: string;
