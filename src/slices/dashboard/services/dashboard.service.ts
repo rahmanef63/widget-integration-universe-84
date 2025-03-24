@@ -66,34 +66,28 @@ export const fetchDashboardMenus = async (dashboardId: string): Promise<Supabase
 /**
  * Fetch menu items for a specific menu
  */
-export const fetchMenuItems = async (menuId: string): Promise<SupabaseMenuItem[]> => {
+export const fetchMenuItems = async (menuId: string): Promise<any[]> => {
   const { data, error } = await supabase
     .from('menu_items')
     .select('*')
     .eq('menu_id', menuId)
-    .order('order_position');
+    .order('id');
   
   if (error) {
     console.error('Error fetching menu items:', error);
     throw error;
   }
   
-  // Transform the data to match our expected type structure if needed
-  // This maps database fields to our TypeScript interface
-  const transformedData = data.map(item => ({
+  // Map the data from the database schema to our sidebar item structure
+  return data.map(item => ({
     id: item.id,
-    menu_id: item.menu_id,
-    label: item.label,
-    path: item.path,
-    icon: item.icon,
-    badge: item.badge,
-    badge_variant: item.badge_variant,
-    order_position: item.order_position,
-    created_at: item.created_at,
-    updated_at: item.updated_at
+    label: item.name, // Map name to label for sidebar display
+    path: item.path || '#', // Default path to # if null
+    icon: item.icon || 'Circle', // Default icon if null
+    badge: null, // Add these properties for compatibility with the sidebar
+    badge_variant: null,
+    order_position: 0 // Default order position
   }));
-  
-  return transformedData;
 };
 
 /**

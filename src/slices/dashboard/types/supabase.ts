@@ -20,18 +20,19 @@ export interface SupabaseDashboardMenu {
   updated_at: string | null;
 }
 
-// Updated to match the actual database schema
+// Updated to match the actual database schema for menu items
 export interface SupabaseMenuItem {
   id: string;
-  menu_id: string;
-  label: string;
-  path: string;
-  icon: string;
-  badge?: string | null;
-  badge_variant?: string | null;
-  order_position: number;
+  dashboard_id: string | null;
+  name: string;
+  path: string | null;
+  icon: string | null;
+  is_label: boolean;
+  is_switch: boolean;
+  parent_id: string | null;
+  permissions: string[];
+  description: string | null;
   created_at: string | null;
-  updated_at: string | null;
 }
 
 export interface DashboardContextState {
