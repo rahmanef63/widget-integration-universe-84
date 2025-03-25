@@ -95,7 +95,7 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
     parent_id: item.parent_id,
   }));
   
-  // Build the tree structure safely
+  // Build the tree structure (avoiding recursive type issues)
   return buildMenuTree(baseItems);
 };
 
@@ -104,33 +104,27 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
  * This implementation avoids recursive type issues
  */
 const buildMenuTree = (items: SidebarItemBase[]): SidebarItem[] => {
-  // Create a map for looking up parent items
+  // Create a map of all items by their ID for fast lookup
   const itemMap = new Map<string, SidebarItemBase>();
   items.forEach(item => itemMap.set(item.id, item));
   
-  // Function to find children for a given parent ID
+  // Find all top-level items (those without a parent)
+  const rootItems = items.filter(item => !item.parent_id);
+  
+  // Helper function to find children for a given parent
   const findChildren = (parentId: string): SidebarItem[] => {
-    return items
+    const children = items
       .filter(item => item.parent_id === parentId)
-      .map(child => {
-        // Create a non-recursive object first
-        const childWithChildren: SidebarItem = {
-          ...child,
-          children: [] // Initialize with empty array
-        };
-        
-        // Then find and set children after object creation
-        childWithChildren.children = findChildren(child.id);
-        
-        return childWithChildren;
-      });
+      .map(item => ({
+        ...item,
+        children: findChildren(item.id)
+      }));
+    
+    return children;
   };
   
-  // Find top-level items (items without a parent)
-  const topLevelItems = items.filter(item => !item.parent_id);
-  
-  // Convert top-level items to SidebarItems with children
-  return topLevelItems.map(item => ({
+  // Convert all root items to SidebarItems with their children
+  return rootItems.map(item => ({
     ...item,
     children: findChildren(item.id)
   }));

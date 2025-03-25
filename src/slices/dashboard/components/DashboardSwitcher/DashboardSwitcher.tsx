@@ -1,76 +1,102 @@
 
-import React from 'react';
-import { Check, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+"use client"
+
+import React, { useState } from 'react';
+import { ChevronsUpDown, Plus } from "lucide-react";
+import { SupabaseDashboard } from '../../types/supabase';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/dropdown-menu";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
 import { renderIcon } from '@/shared/icon-picker/utils';
-import { SupabaseDashboard } from '../../types/supabase';
 
 interface DashboardSwitcherProps {
-  currentDashboard: SupabaseDashboard | null;
   dashboards: SupabaseDashboard[];
+  currentDashboard: SupabaseDashboard | null;
   onDashboardSwitch: (dashboardId: string) => void;
-  className?: string;
 }
 
 const DashboardSwitcher: React.FC<DashboardSwitcherProps> = ({
-  currentDashboard,
   dashboards,
-  onDashboardSwitch,
-  className,
+  currentDashboard,
+  onDashboardSwitch
 }) => {
-  if (!currentDashboard) return null;
+  const { isMobile } = useSidebar();
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className={cn(
-            "w-full justify-between",
-            className
-          )}
-        >
-          <div className="flex items-center gap-2">
-            {currentDashboard.icon ? (
-              renderIcon(currentDashboard.icon, { size: 16 })
-            ) : (
-              renderIcon("Layout", { size: 16 })
-            )}
-            <span className="truncate">{currentDashboard.name}</span>
-          </div>
-          <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-[200px]">
-        {dashboards.map((dashboard) => (
-          <DropdownMenuItem
-            key={dashboard.id}
-            onClick={() => onDashboardSwitch(dashboard.id)}
-            className="flex items-center justify-between"
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                {currentDashboard?.icon ? (
+                  renderIcon(currentDashboard.icon, { className: "size-4" })
+                ) : (
+                  renderIcon("Layout", { className: "size-4" })
+                )}
+              </div>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">
+                  {currentDashboard?.name || "Dashboard"}
+                </span>
+                <span className="truncate text-xs">
+                  {currentDashboard?.description || "Select a dashboard"}
+                </span>
+              </div>
+              <ChevronsUpDown className="ml-auto" />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            align="start"
+            side={isMobile ? "bottom" : "right"}
+            sideOffset={4}
           >
-            <div className="flex items-center gap-2">
-              {dashboard.icon ? (
-                renderIcon(dashboard.icon, { size: 16 })
-              ) : (
-                renderIcon("Layout", { size: 16 })
-              )}
-              <span>{dashboard.name}</span>
-            </div>
-            {currentDashboard.id === dashboard.id && (
-              <Check className="h-4 w-4" />
-            )}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+            <DropdownMenuLabel className="text-xs text-muted-foreground">
+              Dashboards
+            </DropdownMenuLabel>
+            {dashboards.map((dashboard, index) => (
+              <DropdownMenuItem
+                key={dashboard.id}
+                onClick={() => onDashboardSwitch(dashboard.id)}
+                className="gap-2 p-2"
+              >
+                <div className="flex size-6 items-center justify-center rounded-sm border">
+                  {dashboard.icon ? (
+                    renderIcon(dashboard.icon, { className: "size-4 shrink-0" })
+                  ) : (
+                    renderIcon("Layout", { className: "size-4 shrink-0" })
+                  )}
+                </div>
+                {dashboard.name}
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="gap-2 p-2">
+              <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                <Plus className="size-4" />
+              </div>
+              <div className="font-medium text-muted-foreground">Add dashboard</div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
   );
 };
 
