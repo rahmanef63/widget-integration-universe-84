@@ -1,6 +1,6 @@
 
-import { MenuSection, MenuItem, SubMenuItem } from '../types';
-import { SupabaseDashboard } from '../types/supabase';
+import { DashboardSidebarSectionProps, DashboardSidebarItemProps } from '../types';
+import { SupabaseDashboard, SupabaseMenuItem, SupabaseMenuSection } from '../types/supabase';
 
 // Mock dashboards data
 const mockDashboards: SupabaseDashboard[] = [
@@ -12,6 +12,7 @@ const mockDashboards: SupabaseDashboard[] = [
     created_at: '2023-01-01T00:00:00.000Z',
     updated_at: '2023-01-01T00:00:00.000Z',
     user_id: 'user-1',
+    is_default: true,
   },
   {
     id: '2',
@@ -21,6 +22,7 @@ const mockDashboards: SupabaseDashboard[] = [
     created_at: '2023-01-02T00:00:00.000Z',
     updated_at: '2023-01-02T00:00:00.000Z',
     user_id: 'user-1',
+    is_default: false,
   },
   {
     id: '3',
@@ -30,86 +32,120 @@ const mockDashboards: SupabaseDashboard[] = [
     created_at: '2023-01-03T00:00:00.000Z',
     updated_at: '2023-01-03T00:00:00.000Z',
     user_id: 'user-1',
+    is_default: false,
   }
 ];
 
 // Mock menu sections data - this would come from your database
-const mockMenuSections: MenuSection[] = [
+const mockMenuSections: DashboardSidebarSectionProps[] = [
   {
-    id: '1',
-    label: 'Main',
+    title: 'Main',
     items: [
       {
         id: '1-1',
         label: 'Overview',
         icon: 'Home',
         path: '/dashboard',
+        is_label: false,
+        is_switch: false,
+        parent_id: null,
+        children: [],
       },
       {
         id: '1-2',
         label: 'Analytics',
         icon: 'BarChart2',
         path: '/dashboard/analytics',
+        is_label: false,
+        is_switch: false,
+        parent_id: null,
+        children: [],
       },
       {
         id: '1-3',
         label: 'Widgets',
         icon: 'Grid',
         path: '/dashboard/widgets',
+        is_label: false,
+        is_switch: false,
+        parent_id: null,
+        children: [],
       }
     ]
   },
   {
-    id: '2',
-    label: 'Content',
+    title: 'Content',
     items: [
       {
         id: '2-1',
         label: 'Widget Store',
         icon: 'ShoppingBag',
         path: '/dashboard/store',
+        is_label: false,
+        is_switch: false,
+        parent_id: null,
+        children: [],
       },
       {
         id: '2-2',
         label: 'Integrations',
         icon: 'Plug',
         path: '/dashboard/integrations',
+        is_label: false,
+        is_switch: false,
+        parent_id: null,
+        children: [],
       }
     ]
   },
   {
-    id: '3',
-    label: 'Settings',
+    title: 'Settings',
     items: [
       {
         id: '3-1',
         label: 'Profile',
         icon: 'User',
         path: '/dashboard/profile',
+        is_label: false,
+        is_switch: false,
+        parent_id: null,
+        children: [],
       },
       {
         id: '3-2',
         label: 'Preferences',
         icon: 'Settings',
         path: '/dashboard/preferences',
+        is_label: false,
+        is_switch: false,
+        parent_id: null,
+        children: [],
       },
       {
         id: '3-3',
         label: 'Support',
         icon: 'LifeBuoy',
         path: '/dashboard/support',
+        is_label: false,
+        is_switch: false,
+        parent_id: null,
+        children: [],
       },
       {
         id: '3-4',
         label: 'Developer Tools',
         icon: 'Terminal',
         path: '/dashboard/devtools',
+        is_label: false,
+        is_switch: false,
+        parent_id: null,
+        children: [],
       }
     ]
   }
 ];
 
-// Breaking the recursive type by simplifying the buildMenuTree function
+// Fetch dashboards from the API
 export const fetchDashboards = async (): Promise<SupabaseDashboard[]> => {
   // This would be a real API call to Supabase
   return new Promise((resolve) => {
@@ -117,15 +153,27 @@ export const fetchDashboards = async (): Promise<SupabaseDashboard[]> => {
   });
 };
 
-export const fetchMenuSections = async (): Promise<MenuSection[]> => {
+// Fetch a specific dashboard by ID
+export const fetchDashboardById = async (dashboardId: string): Promise<SupabaseDashboard | null> => {
   // This would be a real API call to Supabase
   return new Promise((resolve) => {
-    setTimeout(() => resolve(mockMenuSections), 800);
+    setTimeout(() => {
+      const dashboard = mockDashboards.find(d => d.id === dashboardId);
+      resolve(dashboard || null);
+    }, 500);
   });
 };
 
-// Simplified function to avoid recursive type issues
-export const buildMenuTree = (menuSections: MenuSection[]): MenuSection[] => {
-  // Just return the sections as they are for now to avoid the infinite type error
+// Organize menu items by sections
+export const organizeMenuItemsBySections = async (dashboardId: string): Promise<DashboardSidebarSectionProps[]> => {
+  // In a real application, this would fetch from Supabase
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(mockMenuSections), 600);
+  });
+};
+
+// Build menu tree - avoiding recursive type issues
+export const buildMenuTree = (menuSections: DashboardSidebarSectionProps[]): DashboardSidebarSectionProps[] => {
+  // Just return the sections as they are
   return menuSections;
 };

@@ -8,6 +8,7 @@ export interface SupabaseDashboard {
   created_at: string;
   updated_at: string;
   user_id: string;
+  is_default?: boolean; // Adding the missing is_default property
 }
 
 // SupabaseMenuItem represents a menu item from Supabase
@@ -28,4 +29,14 @@ export interface SupabaseMenuSection {
   label: string;
   dashboard_id: string;
   order?: number;
+}
+
+// Dashboard context state type
+export interface DashboardContextState {
+  currentDashboard: SupabaseDashboard | null;
+  dashboards: SupabaseDashboard[];
+  menuSections: any[]; // We'll define this based on the actual usage
+  isLoading: boolean;
+  error: string | null;
+  switchDashboard: (dashboardId: string) => void;
 }
