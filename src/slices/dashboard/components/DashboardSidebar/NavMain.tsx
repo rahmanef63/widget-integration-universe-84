@@ -1,8 +1,9 @@
+
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronRight } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { DashboardSidebarSectionProps } from '../../types';
 
 import {
@@ -27,7 +28,14 @@ interface NavMainProps {
 }
 
 const NavMain: React.FC<NavMainProps> = ({ sections }) => {
+  const location = useLocation();
   const [activeMenuSwitchId, setActiveMenuSwitchId] = useState<string | null>(null);
+  const [activePath, setActivePath] = useState(location.pathname);
+
+  // Update active path when location changes
+  useEffect(() => {
+    setActivePath(location.pathname);
+  }, [location.pathname]);
 
   // Function to handle menu switch toggle
   const handleMenuSwitchToggle = (switchId: string) => {
@@ -36,23 +44,27 @@ const NavMain: React.FC<NavMainProps> = ({ sections }) => {
 
   // Function to render different types of menu items
   const renderMenuItem = (item: any) => {
+    // Set isActive based on current path
+    const isActive = item.path === activePath;
+    const itemWithActive = { ...item, isActive };
+    
     // Check if it's a menu switch
     if (item.is_switch) {
-      return renderMenuSwitch(item);
+      return renderMenuSwitch(itemWithActive);
     }
     
     // Check if it's a menu label (collapsible group)
     if (item.is_label) {
-      return renderMenuLabel(item);
+      return renderMenuLabel(itemWithActive);
     }
     
     // Check if it has children (sub-menu items)
     if (item.children && item.children.length > 0) {
-      return renderMenuWithSubitems(item);
+      return renderMenuWithSubitems(itemWithActive);
     }
     
     // Regular menu item
-    return renderRegularMenuItem(item);
+    return renderRegularMenuItem(itemWithActive);
   };
 
   // Render a menu label (group header)
@@ -102,15 +114,18 @@ const NavMain: React.FC<NavMainProps> = ({ sections }) => {
         </CollapsibleTrigger>
         <CollapsibleContent>
           <SidebarMenuSub>
-            {item.children?.map((subItem: any) => (
-              <SidebarMenuSubItem key={subItem.id}>
-                <SidebarMenuSubButton asChild>
-                  <Link to={subItem.path || '#'}>
-                    <span>{subItem.label}</span>
-                  </Link>
-                </SidebarMenuSubButton>
-              </SidebarMenuSubItem>
-            ))}
+            {item.children?.map((subItem: any) => {
+              const isSubActive = subItem.path === activePath;
+              return (
+                <SidebarMenuSubItem key={subItem.id}>
+                  <SidebarMenuSubButton asChild isActive={isSubActive}>
+                    <Link to={subItem.path || '#'}>
+                      <span>{subItem.label}</span>
+                    </Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              );
+            })}
           </SidebarMenuSub>
         </CollapsibleContent>
       </SidebarMenuItem>
@@ -120,7 +135,7 @@ const NavMain: React.FC<NavMainProps> = ({ sections }) => {
   // Render a regular menu item
   const renderRegularMenuItem = (item: any) => (
     <SidebarMenuItem key={item.id}>
-      <SidebarMenuButton asChild tooltip={item.label}>
+      <SidebarMenuButton asChild tooltip={item.label} isActive={item.isActive}>
         <Link to={item.path || '#'}>
           {item.icon && renderIcon(item.icon)}
           <span>{item.label}</span>
@@ -159,6 +174,14 @@ const NavMain: React.FC<NavMainProps> = ({ sections }) => {
       }
     }).filter(section => section.items.length > 0);
   }, [sections, activeMenuSwitchId]);
+
+  if (!filteredSections || filteredSections.length === 0) {
+    return (
+      <div className="p-4 text-muted-foreground text-sm">
+        No menu items available for this dashboard
+      </div>
+    );
+  }
 
   return (
     <>

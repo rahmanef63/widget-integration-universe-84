@@ -12,7 +12,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
-import DashboardSwitcher from './DashboardSwitcher';
+import DashboardSwitcher from '../DashboardSwitcher/DashboardSwitcher';
 import NavMain from './NavMain';
 import NavProjects from './NavProjects';
 import NavUser from './NavUser';
@@ -26,7 +26,7 @@ const DashboardSidebar: React.FC = () => {
         <DashboardSwitcher 
           dashboards={dashboards}
           currentDashboard={currentDashboard}
-          onSwitchDashboard={switchDashboard}
+          onDashboardSwitch={switchDashboard}
         />
       </SidebarHeader>
       <SidebarContent className="flex flex-col h-full">

@@ -9,6 +9,8 @@ import { UserCircle } from 'lucide-react';
 import { DashboardContent } from '../';
 import { useDashboard } from '../../contexts/dashboard.context';
 import { Skeleton } from '@/components/ui/skeleton';
+import { DashboardHeader } from '../DashboardHeader/DashboardHeader';
+import { DashboardBreadcrumb } from '../DashboardBreadcrumb/DashboardBreadcrumb';
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const location = useLocation();
@@ -53,11 +55,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen flex w-full">
-        {/* The DashboardSidebar has been updated to get props from context, 
-            so we don't need to pass props directly */}
+        {/* The DashboardSidebar has been updated to get props from context */}
         <DashboardSidebar />
         
         <SidebarInset className="p-0">
+          <div className="sticky top-0 z-10 bg-background border-b p-4 flex items-center gap-2">
+            <SidebarTrigger />
+            <DashboardBreadcrumb />
+          </div>
           <DashboardContent className="p-6">
             {children}
           </DashboardContent>
