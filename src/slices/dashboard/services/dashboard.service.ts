@@ -95,19 +95,19 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
     parent_id: item.parent_id,
   }));
   
-  // Build the tree structure (avoiding recursive type issues)
+  // Build the tree structure
   return buildMenuTree(baseItems);
 };
 
 /**
  * Build a tree of sidebar items from a flat list
- * This implementation avoids recursive type issues by using a non-recursive approach
+ * This implementation fully separates the process to avoid recursive type issues
  */
 const buildMenuTree = (items: SidebarItemBase[]): SidebarItem[] => {
-  // Create a map for quick access to items by ID
+  // Create the item map with empty children arrays
   const itemMap = new Map<string, SidebarItem>();
   
-  // Initialize all items with empty children arrays
+  // First pass: Initialize all items with empty children arrays
   items.forEach(item => {
     itemMap.set(item.id, {
       ...item,
@@ -115,23 +115,24 @@ const buildMenuTree = (items: SidebarItemBase[]): SidebarItem[] => {
     });
   });
   
-  // Identify root items and add children to their parents
+  // Second pass: Identify root items and parent-child relationships
   const rootItems: SidebarItem[] = [];
   
   items.forEach(item => {
-    const itemWithChildren = itemMap.get(item.id)!;
+    const currentItem = itemMap.get(item.id)!;
     
+    // Check if this is a root item (no parent)
     if (!item.parent_id) {
-      // This is a root item
-      rootItems.push(itemWithChildren);
+      rootItems.push(currentItem);
     } else {
       // This item has a parent
       const parent = itemMap.get(item.parent_id);
       if (parent) {
-        parent.children.push(itemWithChildren);
+        // Add current item to its parent's children
+        parent.children.push(currentItem);
       } else {
         // Parent not found, treat as root
-        rootItems.push(itemWithChildren);
+        rootItems.push(currentItem);
       }
     }
   });
