@@ -10,7 +10,7 @@ import { DashboardContent } from '../';
 import { useDashboard } from '../../contexts/dashboard.context';
 import { Skeleton } from '@/components/ui/skeleton';
 import DashboardHeader from '../DashboardHeader/DashboardHeader';
-import { DashboardBreadcrumb } from '../';
+import { DashboardBreadcrumb } from '../DashboardBreadcrumb/DashboardBreadcrumb';
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const location = useLocation();

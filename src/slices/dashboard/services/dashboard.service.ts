@@ -1,179 +1,169 @@
 
-import { DashboardSidebarSectionProps, DashboardSidebarItemProps } from '../types';
-import { SupabaseDashboard, SupabaseMenuItem, SupabaseMenuSection } from '../types/supabase';
+import { supabase } from '@/integrations/supabase/client';
+import { 
+  SupabaseDashboard, 
+  SupabaseDashboardMenu, 
+  SupabaseMenuItem,
+  SidebarItem,
+  SidebarItemBase
+} from '../types/supabase';
+import { DashboardSidebarSectionProps } from '../types';
 
-// Mock dashboards data
-const mockDashboards: SupabaseDashboard[] = [
-  {
-    id: '1',
-    name: 'Main Dashboard',
-    description: 'Primary dashboard with overview of all systems',
-    icon: 'Layout',
-    created_at: '2023-01-01T00:00:00.000Z',
-    updated_at: '2023-01-01T00:00:00.000Z',
-    user_id: 'user-1',
-    is_default: true,
-  },
-  {
-    id: '2',
-    name: 'Analytics Dashboard',
-    description: 'Detailed analytics and reporting',
-    icon: 'BarChart',
-    created_at: '2023-01-02T00:00:00.000Z',
-    updated_at: '2023-01-02T00:00:00.000Z',
-    user_id: 'user-1',
-    is_default: false,
-  },
-  {
-    id: '3',
-    name: 'Project Dashboard',
-    description: 'Manage your projects and tasks',
-    icon: 'FolderKanban',
-    created_at: '2023-01-03T00:00:00.000Z',
-    updated_at: '2023-01-03T00:00:00.000Z',
-    user_id: 'user-1',
-    is_default: false,
-  }
-];
-
-// Mock menu sections data - this would come from your database
-const mockMenuSections: DashboardSidebarSectionProps[] = [
-  {
-    title: 'Main',
-    items: [
-      {
-        id: '1-1',
-        label: 'Overview',
-        icon: 'Home',
-        path: '/dashboard',
-        is_label: false,
-        is_switch: false,
-        parent_id: null,
-        children: [],
-      },
-      {
-        id: '1-2',
-        label: 'Analytics',
-        icon: 'BarChart2',
-        path: '/dashboard/analytics',
-        is_label: false,
-        is_switch: false,
-        parent_id: null,
-        children: [],
-      },
-      {
-        id: '1-3',
-        label: 'Widgets',
-        icon: 'Grid',
-        path: '/dashboard/widgets',
-        is_label: false,
-        is_switch: false,
-        parent_id: null,
-        children: [],
-      }
-    ]
-  },
-  {
-    title: 'Content',
-    items: [
-      {
-        id: '2-1',
-        label: 'Widget Store',
-        icon: 'ShoppingBag',
-        path: '/dashboard/store',
-        is_label: false,
-        is_switch: false,
-        parent_id: null,
-        children: [],
-      },
-      {
-        id: '2-2',
-        label: 'Integrations',
-        icon: 'Plug',
-        path: '/dashboard/integrations',
-        is_label: false,
-        is_switch: false,
-        parent_id: null,
-        children: [],
-      }
-    ]
-  },
-  {
-    title: 'Settings',
-    items: [
-      {
-        id: '3-1',
-        label: 'Profile',
-        icon: 'User',
-        path: '/dashboard/profile',
-        is_label: false,
-        is_switch: false,
-        parent_id: null,
-        children: [],
-      },
-      {
-        id: '3-2',
-        label: 'Preferences',
-        icon: 'Settings',
-        path: '/dashboard/preferences',
-        is_label: false,
-        is_switch: false,
-        parent_id: null,
-        children: [],
-      },
-      {
-        id: '3-3',
-        label: 'Support',
-        icon: 'LifeBuoy',
-        path: '/dashboard/support',
-        is_label: false,
-        is_switch: false,
-        parent_id: null,
-        children: [],
-      },
-      {
-        id: '3-4',
-        label: 'Developer Tools',
-        icon: 'Terminal',
-        path: '/dashboard/devtools',
-        is_label: false,
-        is_switch: false,
-        parent_id: null,
-        children: [],
-      }
-    ]
-  }
-];
-
-// Fetch dashboards from the API
+/**
+ * Fetch all dashboards from the database
+ */
 export const fetchDashboards = async (): Promise<SupabaseDashboard[]> => {
-  // This would be a real API call to Supabase
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(mockDashboards), 800);
-  });
+  const { data, error } = await supabase
+    .from('dashboards')
+    .select('*')
+    .order('name');
+  
+  if (error) {
+    console.error('Error fetching dashboards:', error);
+    throw error;
+  }
+  
+  return data as SupabaseDashboard[];
 };
 
-// Fetch a specific dashboard by ID
-export const fetchDashboardById = async (dashboardId: string): Promise<SupabaseDashboard | null> => {
-  // This would be a real API call to Supabase
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const dashboard = mockDashboards.find(d => d.id === dashboardId);
-      resolve(dashboard || null);
-    }, 500);
-  });
+/**
+ * Fetch a specific dashboard by ID
+ */
+export const fetchDashboardById = async (id: string): Promise<SupabaseDashboard | null> => {
+  const { data, error } = await supabase
+    .from('dashboards')
+    .select('*')
+    .eq('id', id)
+    .single();
+  
+  if (error) {
+    if (error.code === 'PGRST116') { // No rows returned
+      return null;
+    }
+    console.error('Error fetching dashboard by ID:', error);
+    throw error;
+  }
+  
+  return data as SupabaseDashboard;
 };
 
-// Organize menu items by sections
-export const organizeMenuItemsBySections = async (dashboardId: string): Promise<DashboardSidebarSectionProps[]> => {
-  // In a real application, this would fetch from Supabase
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(mockMenuSections), 600);
-  });
+/**
+ * Fetch dashboard menus for a specific dashboard
+ */
+export const fetchDashboardMenus = async (dashboardId: string): Promise<SupabaseDashboardMenu[]> => {
+  const { data, error } = await supabase
+    .from('dashboard_menus')
+    .select('*')
+    .eq('dashboard_id', dashboardId)
+    .order('order_position');
+  
+  if (error) {
+    console.error('Error fetching dashboard menus:', error);
+    throw error;
+  }
+  
+  return data as SupabaseDashboardMenu[];
 };
 
-// Build menu tree - avoiding recursive type issues
-export const buildMenuTree = (menuSections: DashboardSidebarSectionProps[]): DashboardSidebarSectionProps[] => {
-  // Just return the sections as they are
-  return menuSections;
+/**
+ * Fetch menu items for a specific menu
+ */
+export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => {
+  // Fetch all items for this menu
+  const { data, error } = await supabase
+    .from('menu_items')
+    .select('*')
+    .eq('menu_id', menuId)
+    .order('id');
+  
+  if (error) {
+    console.error('Error fetching menu items:', error);
+    throw error;
+  }
+  
+  // First map raw database items to base items without children
+  const baseItems: SidebarItemBase[] = data.map(item => ({
+    id: item.id,
+    label: item.name, // Map name to label for sidebar display
+    path: item.path || '#', // Default path to # if null
+    icon: item.icon || 'Circle', // Default icon if null
+    badge: null, // Default badge
+    badge_variant: null, // Default badge variant
+    isActive: false, // Default active state
+    is_label: item.is_label,
+    is_switch: item.is_switch,
+    parent_id: item.parent_id,
+  }));
+  
+  // Build the tree structure safely
+  return buildMenuTree(baseItems);
+};
+
+/**
+ * Build a tree of sidebar items from a flat list
+ * This implementation avoids recursive type issues
+ */
+const buildMenuTree = (items: SidebarItemBase[]): SidebarItem[] => {
+  // Create a map for looking up parent items
+  const itemMap = new Map<string, SidebarItemBase>();
+  items.forEach(item => itemMap.set(item.id, item));
+  
+  // Function to find children for a given parent ID
+  const findChildren = (parentId: string): SidebarItem[] => {
+    return items
+      .filter(item => item.parent_id === parentId)
+      .map(child => {
+        // Create a non-recursive object first
+        const childWithChildren: SidebarItem = {
+          ...child,
+          children: [] // Initialize with empty array
+        };
+        
+        // Then find and set children after object creation
+        childWithChildren.children = findChildren(child.id);
+        
+        return childWithChildren;
+      });
+  };
+  
+  // Find top-level items (items without a parent)
+  const topLevelItems = items.filter(item => !item.parent_id);
+  
+  // Convert top-level items to SidebarItems with children
+  return topLevelItems.map(item => ({
+    ...item,
+    children: findChildren(item.id)
+  }));
+};
+
+/**
+ * Organize menu items by sections to create sidebar navigation
+ */
+export const organizeMenuItemsBySections = async (
+  dashboardId: string
+): Promise<DashboardSidebarSectionProps[]> => {
+  try {
+    // Fetch all menus for this dashboard
+    const menus = await fetchDashboardMenus(dashboardId);
+    
+    // Build sections array
+    const sections: DashboardSidebarSectionProps[] = [];
+    
+    // For each menu, fetch its items and add to sections
+    for (const menu of menus) {
+      const menuItems = await fetchMenuItems(menu.id);
+      
+      if (menuItems.length > 0) {
+        sections.push({
+          title: menu.title,
+          items: menuItems
+        });
+      }
+    }
+    
+    return sections;
+  } catch (error) {
+    console.error('Error organizing menu items by sections:', error);
+    return [];
+  }
 };
