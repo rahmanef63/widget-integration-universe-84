@@ -101,33 +101,42 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
 
 /**
  * Build a tree of sidebar items from a flat list
- * This implementation avoids recursive type issues
+ * This implementation avoids recursive type issues by using a non-recursive approach
  */
 const buildMenuTree = (items: SidebarItemBase[]): SidebarItem[] => {
-  // Create a map of all items by their ID for fast lookup
-  const itemMap = new Map<string, SidebarItemBase>();
-  items.forEach(item => itemMap.set(item.id, item));
+  // Create a map for quick access to items by ID
+  const itemMap = new Map<string, SidebarItem>();
   
-  // Find all top-level items (those without a parent)
-  const rootItems = items.filter(item => !item.parent_id);
+  // Initialize all items with empty children arrays
+  items.forEach(item => {
+    itemMap.set(item.id, {
+      ...item,
+      children: []
+    });
+  });
   
-  // Helper function to find children for a given parent
-  const findChildren = (parentId: string): SidebarItem[] => {
-    const children = items
-      .filter(item => item.parent_id === parentId)
-      .map(item => ({
-        ...item,
-        children: findChildren(item.id)
-      }));
+  // Identify root items and add children to their parents
+  const rootItems: SidebarItem[] = [];
+  
+  items.forEach(item => {
+    const itemWithChildren = itemMap.get(item.id)!;
     
-    return children;
-  };
+    if (!item.parent_id) {
+      // This is a root item
+      rootItems.push(itemWithChildren);
+    } else {
+      // This item has a parent
+      const parent = itemMap.get(item.parent_id);
+      if (parent) {
+        parent.children.push(itemWithChildren);
+      } else {
+        // Parent not found, treat as root
+        rootItems.push(itemWithChildren);
+      }
+    }
+  });
   
-  // Convert all root items to SidebarItems with their children
-  return rootItems.map(item => ({
-    ...item,
-    children: findChildren(item.id)
-  }));
+  return rootItems;
 };
 
 /**
