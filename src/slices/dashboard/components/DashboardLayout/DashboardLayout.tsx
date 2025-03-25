@@ -9,7 +9,7 @@ import { UserCircle } from 'lucide-react';
 import { DashboardContent } from '../';
 import { useDashboard } from '../../contexts/dashboard.context';
 import { Skeleton } from '@/components/ui/skeleton';
-import { DashboardHeader } from '../DashboardHeader/DashboardHeader';
+import DashboardHeader from '../DashboardHeader/DashboardHeader';
 import { DashboardBreadcrumb } from '../DashboardBreadcrumb/DashboardBreadcrumb';
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
