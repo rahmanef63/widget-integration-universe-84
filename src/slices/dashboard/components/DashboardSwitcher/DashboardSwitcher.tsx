@@ -39,7 +39,11 @@ const DashboardSwitcher: React.FC<DashboardSwitcherProps> = ({
           )}
         >
           <div className="flex items-center gap-2">
-            {renderIcon(currentDashboard.icon, { size: 16 })}
+            {currentDashboard.icon ? (
+              renderIcon(currentDashboard.icon, { size: 16 })
+            ) : (
+              renderIcon("Layout", { size: 16 })
+            )}
             <span className="truncate">{currentDashboard.name}</span>
           </div>
           <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
@@ -53,7 +57,11 @@ const DashboardSwitcher: React.FC<DashboardSwitcherProps> = ({
             className="flex items-center justify-between"
           >
             <div className="flex items-center gap-2">
-              {renderIcon(dashboard.icon, { size: 16 })}
+              {dashboard.icon ? (
+                renderIcon(dashboard.icon, { size: 16 })
+              ) : (
+                renderIcon("Layout", { size: 16 })
+              )}
               <span>{dashboard.name}</span>
             </div>
             {currentDashboard.id === dashboard.id && (

@@ -69,7 +69,7 @@ export const fetchDashboardMenus = async (dashboardId: string): Promise<Supabase
  * Fetch menu items for a specific menu
  */
 export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => {
-  // Use a more explicit annotation for the return type to avoid deep recursion
+  // Fetch all items for this menu
   const { data, error } = await supabase
     .from('menu_items')
     .select('*')
@@ -95,45 +95,37 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
     parent_id: item.parent_id,
   }));
   
-  // Then build the tree structure safely
-  const sidebarItems: SidebarItem[] = buildSidebarTree(baseItems);
-  
-  return sidebarItems;
+  // Build the tree structure safely
+  return buildMenuTree(baseItems);
 };
 
 /**
  * Build a tree of sidebar items from a flat list
+ * This implementation avoids recursive type issues
  */
-const buildSidebarTree = (items: SidebarItemBase[]): SidebarItem[] => {
-  // First identify top-level items and child items
+const buildMenuTree = (items: SidebarItemBase[]): SidebarItem[] => {
+  // First identify top-level items
   const topLevelItems = items.filter(item => !item.parent_id);
-  const childItems = items.filter(item => item.parent_id);
   
-  // Create a map for easier lookup
+  // Create a map for looking up parent items
   const itemMap = new Map<string, SidebarItemBase>();
   items.forEach(item => itemMap.set(item.id, item));
   
-  // Build the tree recursively but with a safe approach
-  const result: SidebarItem[] = topLevelItems.map(item => {
-    // Initial transformation to SidebarItem
-    const sidebarItem: SidebarItem = {
-      ...item,
-      children: []
-    };
-    
-    // Find direct children
-    const directChildren = childItems.filter(child => child.parent_id === item.id);
-    
-    // If there are children, process them (limited to one level for simplicity)
-    if (directChildren.length > 0) {
-      sidebarItem.children = directChildren.map(child => ({
+  // Function to find children for a given parent ID
+  const findChildren = (parentId: string): SidebarItem[] => {
+    return items
+      .filter(item => item.parent_id === parentId)
+      .map(child => ({
         ...child,
-        children: [] // Leaf nodes have empty children arrays
+        children: findChildren(child.id)
       }));
-    }
-    
-    return sidebarItem;
-  });
+  };
+  
+  // Convert top-level items to SidebarItems with children
+  const result: SidebarItem[] = topLevelItems.map(item => ({
+    ...item,
+    children: findChildren(item.id)
+  }));
   
   return result;
 };

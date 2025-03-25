@@ -1,7 +1,6 @@
-
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ChevronRight } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { DashboardSidebarSectionProps } from '../../types';
@@ -28,16 +27,23 @@ interface NavMainProps {
 }
 
 const NavMain: React.FC<NavMainProps> = ({ sections }) => {
+  const [activeMenuSwitchId, setActiveMenuSwitchId] = useState<string | null>(null);
+
+  // Function to handle menu switch toggle
+  const handleMenuSwitchToggle = (switchId: string) => {
+    setActiveMenuSwitchId(prevId => prevId === switchId ? null : switchId);
+  };
+
   // Function to render different types of menu items
   const renderMenuItem = (item: any) => {
-    // Check if it's a menu label (collapsible group)
-    if (item.is_label) {
-      return renderMenuLabel(item);
-    }
-    
     // Check if it's a menu switch
     if (item.is_switch) {
       return renderMenuSwitch(item);
+    }
+    
+    // Check if it's a menu label (collapsible group)
+    if (item.is_label) {
+      return renderMenuLabel(item);
     }
     
     // Check if it has children (sub-menu items)
@@ -60,14 +66,23 @@ const NavMain: React.FC<NavMainProps> = ({ sections }) => {
   );
 
   // Render a menu switch (for filtering like company-a to company-b)
-  const renderMenuSwitch = (item: any) => (
-    <SidebarMenuItem key={item.id}>
-      <SidebarMenuButton tooltip={item.label}>
-        {item.icon && renderIcon(item.icon)}
-        <span>{item.label}</span>
-      </SidebarMenuButton>
-    </SidebarMenuItem>
-  );
+  const renderMenuSwitch = (item: any) => {
+    const isActive = activeMenuSwitchId === item.id;
+    
+    return (
+      <SidebarMenuItem key={item.id}>
+        <SidebarMenuButton 
+          tooltip={item.label}
+          onClick={() => handleMenuSwitchToggle(item.id)}
+          className={isActive ? "bg-sidebar-accent text-sidebar-accent-foreground" : ""}
+        >
+          {item.icon && renderIcon(item.icon)}
+          <span>{item.label}</span>
+          {isActive && <span className="ml-auto text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">Active</span>}
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    );
+  };
 
   // Render a menu item with subitems (collapsible)
   const renderMenuWithSubitems = (item: any) => (
@@ -119,9 +134,35 @@ const NavMain: React.FC<NavMainProps> = ({ sections }) => {
     </SidebarMenuItem>
   );
 
+  // Filter menu items based on active menu switch
+  const filteredSections = React.useMemo(() => {
+    if (!activeMenuSwitchId) {
+      return sections;
+    }
+
+    return sections.map(section => {
+      // Find if this section contains the active switch
+      const hasActiveSwitch = section.items.some(item => item.id === activeMenuSwitchId);
+      
+      if (hasActiveSwitch) {
+        // If this section has the active switch, keep only that item
+        return {
+          ...section,
+          items: section.items.filter(item => item.id === activeMenuSwitchId)
+        };
+      } else {
+        // Otherwise, filter out any other switches, but keep non-switch items
+        return {
+          ...section,
+          items: section.items.filter(item => !item.is_switch)
+        };
+      }
+    }).filter(section => section.items.length > 0);
+  }, [sections, activeMenuSwitchId]);
+
   return (
     <>
-      {sections.map((section) => (
+      {filteredSections.map((section) => (
         <SidebarGroup key={section.title}>
           <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
           <SidebarMenu>
