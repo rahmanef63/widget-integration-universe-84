@@ -1,64 +1,31 @@
 
-// Supabase Dashboard Type
+// SupabaseDashboard represents a dashboard from Supabase
 export interface SupabaseDashboard {
   id: string;
   name: string;
-  description?: string;
-  icon?: string;
-  is_default: boolean;
+  description: string;
+  icon?: string; // Optional icon name
   created_at: string;
-  updated_at?: string;
+  updated_at: string;
+  user_id: string;
 }
 
-// Supabase Dashboard Menu Type
-export interface SupabaseDashboardMenu {
-  id: string;
-  dashboard_id: string;
-  title: string;
-  order_position: number;
-  created_at: string;
-  updated_at?: string;
-}
-
-// Supabase Menu Item Type
+// SupabaseMenuItem represents a menu item from Supabase
 export interface SupabaseMenuItem {
   id: string;
-  menu_id: string;
-  name: string;
-  path?: string;
+  label: string;
   icon?: string;
-  parent_id: string | null;
-  is_label: boolean;
-  is_switch: boolean;
-  created_at: string;
-  updated_at?: string;
+  path?: string;
+  parent_id?: string | null;
+  section_id?: string;
+  dashboard_id?: string;
+  order?: number;
 }
 
-// Base interface without recursive children reference
-export interface SidebarItemBase {
+// SupabaseMenuSection represents a menu section from Supabase
+export interface SupabaseMenuSection {
   id: string;
   label: string;
-  path?: string;
-  icon?: string;
-  badge?: string | number | null;
-  badge_variant?: string | null;
-  isActive?: boolean;
-  is_label: boolean;
-  is_switch: boolean;
-  parent_id: string | null;
-}
-
-// Extended interface with children property
-export interface SidebarItem extends SidebarItemBase {
-  children: SidebarItem[];
-}
-
-// Dashboard Context State Type
-export interface DashboardContextState {
-  currentDashboard: SupabaseDashboard | null;
-  dashboards: SupabaseDashboard[];
-  menuSections: any[];
-  isLoading: boolean;
-  error: string | null;
-  switchDashboard: (dashboardId: string) => void;
+  dashboard_id: string;
+  order?: number;
 }
