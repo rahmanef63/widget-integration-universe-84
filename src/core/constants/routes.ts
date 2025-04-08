@@ -8,6 +8,7 @@ export const ROUTES = {
   ECOSYSTEM: '/ecosystem',
   WIDGET_STORE: '/widget-store',
   DASHBOARD: '/dashboard',
+  WORKSHOP: '/workshop',
   NOT_FOUND: '*'
 };
 
@@ -26,4 +27,11 @@ export const ECOSYSTEM_ROUTES = {
   EXTENSIONS: '/ecosystem/extensions',
   PLUGINS: '/ecosystem/plugins',
   THEMES: '/ecosystem/themes'
+};
+
+// Sub-routes for workshop
+export const WORKSHOP_ROUTES = {
+  MARKETING: '/workshop/marketing',
+  DEVELOPER: '/workshop/developer',
+  DASHBOARD: '/workshop/dashboard'
 };

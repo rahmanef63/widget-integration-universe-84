@@ -24,6 +24,8 @@ const Integrations = React.lazy(() => import("@/slices/integrations/pages/Integr
 const Profile = React.lazy(() => import("@/slices/profile/pages/Profile"));
 const Preferences = React.lazy(() => import("@/slices/preferences/pages/Preferences"));
 const Support = React.lazy(() => import("@/slices/support/pages/Support"));
+const WorkshopList = React.lazy(() => import("@/slices/workshops/pages/WorkshopList"));
+const WorkshopDetail = React.lazy(() => import("@/slices/workshops/pages/WorkshopDetail"));
 
 const queryClient = new QueryClient();
 
@@ -54,6 +56,16 @@ const App = () => (
                       <Route path="preferences" element={<Preferences />} />
                       <Route path="support" element={<Support />} />
                       <Route path="devtools" element={<DevTools />} />
+                    </Routes>
+                  </DashboardProvider>
+                } />
+                
+                {/* Workshop routes */}
+                <Route path="/workshop" element={
+                  <DashboardProvider>
+                    <Routes>
+                      <Route path="/" element={<WorkshopList />} />
+                      <Route path=":id" element={<WorkshopDetail />} />
                     </Routes>
                   </DashboardProvider>
                 } />

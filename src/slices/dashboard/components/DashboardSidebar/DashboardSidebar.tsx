@@ -16,6 +16,7 @@ import DashboardSwitcher from '../DashboardSwitcher/DashboardSwitcher';
 import NavMain from './NavMain';
 import NavProjects from './NavProjects';
 import NavUser from './NavUser';
+import WorkshopsNav from './WorkshopsNav';
 
 const DashboardSidebar: React.FC = () => {
   const { currentDashboard, dashboards, menuSections, switchDashboard, isLoading } = useContext(DashboardContext)!;
@@ -46,6 +47,8 @@ const DashboardSidebar: React.FC = () => {
           <div className="flex flex-col h-full">
             <div className="flex-grow">
               <NavMain sections={menuSections} />
+              {/* Add WorkshopsNav component */}
+              <WorkshopsNav />
             </div>
             <div className="mt-auto">
               <NavProjects />

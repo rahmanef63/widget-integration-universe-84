@@ -67,6 +67,7 @@ export const fetchDashboardMenus = async (dashboardId: string): Promise<Supabase
 
 /**
  * Fetch menu items for a specific menu
+ * Uses a non-recursive approach to avoid TypeScript depth errors
  */
 export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => {
   // Fetch all items for this menu
