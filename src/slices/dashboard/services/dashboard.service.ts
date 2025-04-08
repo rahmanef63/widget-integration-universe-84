@@ -3,7 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { 
   SupabaseDashboard, 
   SupabaseDashboardMenu, 
-  SidebarItem
+  SidebarItem,
+  SidebarItemBase
 } from '../types/supabase';
 import { DashboardSidebarSectionProps } from '../types';
 
@@ -80,42 +81,44 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
     throw error;
   }
   
-  // First map raw database items to base items without children
+  // Create a map to store items by ID for quick lookup
   const itemMap = new Map<string, SidebarItem>();
-  const rootItems: SidebarItem[] = [];
   
-  // First create all items with empty children arrays
+  // First pass: Create all items without children relationships
   data.forEach(item => {
-    itemMap.set(item.id, {
+    const sidebarItem: SidebarItem = {
       id: item.id,
-      label: item.name, // Map name to label for sidebar display
-      path: item.path || '#', // Default path to # if null
-      icon: item.icon || 'Circle', // Default icon if null
-      badge: null, // Default badge
-      badge_variant: null, // Default badge variant
-      isActive: false, // Default active state
+      label: item.name,
+      path: item.path || '#',
+      icon: item.icon || 'Circle',
+      badge: null,
+      badge_variant: null,
+      isActive: false,
       is_label: item.is_label,
       is_switch: item.is_switch,
       parent_id: item.parent_id,
-      children: []
-    });
+      children: [] // Initialize with empty array
+    };
+    
+    itemMap.set(item.id, sidebarItem);
   });
   
-  // Then establish parent-child relationships
-  data.forEach(item => {
-    const current = itemMap.get(item.id)!;
-    
+  // Second pass: Build the hierarchy
+  const rootItems: SidebarItem[] = [];
+  
+  // Process each item and establish parent-child relationships
+  itemMap.forEach(item => {
     if (!item.parent_id) {
-      // Root item
-      rootItems.push(current);
+      // This is a root item
+      rootItems.push(item);
     } else {
-      // Child item
+      // This is a child item - find its parent and add it as a child
       const parent = itemMap.get(item.parent_id);
       if (parent) {
-        parent.children.push(current);
+        parent.children.push(item);
       } else {
-        // If parent not found, treat as root
-        rootItems.push(current);
+        // If parent not found for some reason, add to root
+        rootItems.push(item);
       }
     }
   });
