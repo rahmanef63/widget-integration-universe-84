@@ -3,9 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { 
   SupabaseDashboard, 
   SupabaseDashboardMenu, 
-  SupabaseMenuItem,
-  SidebarItem,
-  SidebarItemBase
+  SidebarItem
 } from '../types/supabase';
 import { DashboardSidebarSectionProps } from '../types';
 
@@ -83,46 +81,41 @@ export const fetchMenuItems = async (menuId: string): Promise<SidebarItem[]> => 
   }
   
   // First map raw database items to base items without children
-  const baseItems: SidebarItemBase[] = data.map(item => ({
-    id: item.id,
-    label: item.name, // Map name to label for sidebar display
-    path: item.path || '#', // Default path to # if null
-    icon: item.icon || 'Circle', // Default icon if null
-    badge: null, // Default badge
-    badge_variant: null, // Default badge variant
-    isActive: false, // Default active state
-    is_label: item.is_label,
-    is_switch: item.is_switch,
-    parent_id: item.parent_id,
-  }));
-  
-  // Build tree using a non-recursive approach
   const itemMap = new Map<string, SidebarItem>();
   const rootItems: SidebarItem[] = [];
   
   // First create all items with empty children arrays
-  baseItems.forEach(item => {
+  data.forEach(item => {
     itemMap.set(item.id, {
-      ...item,
+      id: item.id,
+      label: item.name, // Map name to label for sidebar display
+      path: item.path || '#', // Default path to # if null
+      icon: item.icon || 'Circle', // Default icon if null
+      badge: null, // Default badge
+      badge_variant: null, // Default badge variant
+      isActive: false, // Default active state
+      is_label: item.is_label,
+      is_switch: item.is_switch,
+      parent_id: item.parent_id,
       children: []
     });
   });
   
   // Then establish parent-child relationships
-  baseItems.forEach(item => {
-    const itemWithChildren = itemMap.get(item.id)!;
+  data.forEach(item => {
+    const current = itemMap.get(item.id)!;
     
     if (!item.parent_id) {
       // Root item
-      rootItems.push(itemWithChildren);
+      rootItems.push(current);
     } else {
       // Child item
       const parent = itemMap.get(item.parent_id);
       if (parent) {
-        parent.children.push(itemWithChildren);
+        parent.children.push(current);
       } else {
         // If parent not found, treat as root
-        rootItems.push(itemWithChildren);
+        rootItems.push(current);
       }
     }
   });
