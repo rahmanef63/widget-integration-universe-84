@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { WorkshopCardProps } from '../../types';
-import { WorkshopProgress } from '../WorkshopProgress/WorkshopProgress';
+import WorkshopProgress from '../WorkshopProgress/WorkshopProgress';
 import { renderIcon } from '@/shared/icon-picker/utils';
 
 const WorkshopCard: React.FC<WorkshopCardProps> = ({ workshop, className }) => {
